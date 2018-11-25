@@ -173,7 +173,7 @@ class QueryUtils  {
         return results;
     }
 
-  
+
 
 }
 module.exports =  QueryUtils ;
