@@ -139,7 +139,7 @@ class QueryUtils  {
                 console.log('end of getAllResults iterator data');
                 await iterator.close();
                 console.info(allResults);
-                return allResults;
+                return allResults; // JSON.stringify(allResults);
             }
         }
     }
