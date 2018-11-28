@@ -21,7 +21,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 const CommercialPaper = require('../contract/lib/paper.js');
 
 // A wallet stores a collection of identities for use
-const wallet = new FileSystemWallet('../identity/user/balaji/wallet');
+const wallet = new FileSystemWallet('/tmp/wallet');
 
 // Main program function
 async function main() {
@@ -33,8 +33,7 @@ async function main() {
   try {
 
     // Specify userName for network access - we'll use the Admin cert for now, but it would be the employee cert usually
-    // const userName = 'balaji.broker@digibank.com';
-    const userName = 'Admin@org1.example.com';
+    const userName = 'bart@hedgematic';
 
     // Load connection profile; will be used to locate a gateway
     let connectionProfile = yaml.safeLoad(fs.readFileSync('../gateway/networkConnection.yaml', 'utf8'));
@@ -65,7 +64,7 @@ async function main() {
     // buy commercial paper
     console.log('Submit commercial paper buy transaction.');
 
-    const buyResponse = await contract.submitTransaction('buy', 'MagnetoCorp', '00001', 'DigiBank', 'Hedgematic', '4850000', '2020-05-31');
+    const buyResponse = await contract.submitTransaction('buy', 'MagnetoCorp', '00001', 'DigiBank', 'Hedgematic', '4800000', '2020-05-31');
 
     // process response
     console.log('Process buy transaction response.');
