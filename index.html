@@ -67,7 +67,7 @@
         */
 
        // Need to replace the 'State' numbers, with real status - the structure is below
-       // the declared 'changeName' function (earlier) does the replace work
+       // the declared 'changeName' function (earlier) does the replace work and called later on
         var cpState = { ISSUED: 1,
     			TRADING: 2,
     			REDEEMED: 3
@@ -95,18 +95,18 @@
    	var table = new Tabulator("#example-table", {
     	data:tabledata,  /// set the table data
     		    layout:"fitColumns", //fit columns to width of table (optional)
-		    height:150, // set height of table (optional)
-                    responsiveLayout:"hide",
-                    width:1400,
+		    height:190, // set height of table (optional)
+                    width:2000,
                     addRowPos:"top",
 		    history:true,
-		    paginationSize:20,
-		    columns:[ //Define Table Columns for Asset History
+		    paginationSize:40,
+		    columns:[ //Define Table Columns
                         {title:"Txn Id", field:"TxId", sorter:"string", formatter:"textarea", width:40},
                         {title:"Time Executed", field:"Timestamp", sorter:"string", width:250},
                         {title:"Txn State", field:"Value.currentState", sorter:"string", width:140},
-                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:300},
+                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:30},
                         {title:"Current Owner", field:"Value.owner", sorter:"string", width:250},
+                        {title:"Price", field:"Value.price", formatter:"money", sorter:"string", width:150},
                         {title:"Face Value", field:"Value.faceValue", formatter:"money", sorter:"string", width:150},
                         {title:"Maturity Date", field:"Value.maturityDateTime", sorter:"string", align:"left", width:200},
                     ],
@@ -126,14 +126,14 @@
 
         table.setData(actual_JSON); // this is where the JSON payload is loaded
 
-        console.log("actual JSON element is " + actual_JSON[0]);
+        //console.log("actual JSON element is " + actual_JSON[0]);
         // Set which Asset ID is being reported upon and display it to appropriate element
         var element = document.getElementById("title");
 	element.innerHTML = "Asset ID: " + actual_JSON[0].Value.key ; 
  
-// These are removed for now.
-//trigger download of data.csv file
 
+//trigger download -- these buttons are not implemented, just placeholder buttons shown for now
+	
 //$("#download-csv").click(function(){
     //$("#example-table").tabulator("download", "csv", "data.csv");
 //});
