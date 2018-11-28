@@ -16,6 +16,7 @@ SPDX-License-Identifier: Apache-2.0
 
 // Bring key classes into scope, most importantly Fabric SDK network class
 const fs = require('fs');
+const fsextra = require('fs-extra');
 const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 const CommercialPaper = require('../contract/lib/paper.js');
@@ -61,13 +62,14 @@ async function main() {
         const contract = await network.getContract('papercontract', 'org.papernet.commercialpaper');
 
         console.log(' ');
-        console.log('Calling query the history of Commercial Paper instance 00001');
+        console.log('Calling queryHist to get the history of Commercial Paper instance 00001');
         console.log('============================================================');
         console.log(' ');
         // QUERY the history of a commercial paper providing it the Issuer/paper number combo below
         const queryResponse = await contract.submitTransaction('queryHist', 'MagnetoCorp', '00001');
 //        let queryresult = CommercialPaper.fromBuffer(queryResponse);
 
+        let file = await fs.writeFileSync('results.json', queryResponse, 'utf8');
         console.log('the query HISTORY response is ' + queryResponse);
         console.log(' ');
 
@@ -76,7 +78,7 @@ async function main() {
         // query the OWNER of a commercial paper
         console.log(' ');
         console.log(' ');
-        console.log('Calling query the owner of Commercial Paper instance 00001');
+        console.log('Calling queryOwner to get current owner of Commercial Paper instance 00001');
         console.log('==========================================================');
         console.log(' ');
         console.log(' ');
