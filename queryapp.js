@@ -7,9 +7,9 @@ SPDX-License-Identifier: Apache-2.0
  * 1. Select an identity from a wallet
  * 2. Connect to network gateway
  * 3. Access PaperNet network
- * 4. Construct request to issue commercial paper
- * 5. Submit transaction
- * 6. Process response
+ * 4. Construct request to query commercial paper history
+ * 5. Submit query transactions
+ * 6. Process responses that are returned (eg display, render in a browser etc)
  */
 
 'use strict';
@@ -63,23 +63,25 @@ async function main() {
 
         console.log(' ');
         console.log('Calling queryHist to get the history of Commercial Paper instance 00001');
-        console.log('============================================================');
+        console.log('=======================================================================');
         console.log(' ');
         // QUERY the history of a commercial paper providing it the Issuer/paper number combo below
         const queryResponse = await contract.submitTransaction('queryHist', 'MagnetoCorp', '00001');
-//        let queryresult = CommercialPaper.fromBuffer(queryResponse);
+        //let queryresult = CommercialPaper.fromBuffer(queryResponse);
 
         let file = await fs.writeFileSync('results.json', queryResponse, 'utf8');
         console.log('the query HISTORY response is ' + queryResponse);
+        //console.log('the query buffer response is ' + queryresult);
         console.log(' ');
 
         console.log('Transaction complete.');
+        console.log(' ');
 
         // query the OWNER of a commercial paper
         console.log(' ');
         console.log(' ');
         console.log('Calling queryOwner to get current owner of Commercial Paper instance 00001');
-        console.log('==========================================================');
+        console.log('==========================================================================');
         console.log(' ');
         console.log(' ');
         const queryResponse2 = await contract.submitTransaction('queryOwner', 'MagnetoCorp', '00001');
@@ -88,7 +90,7 @@ async function main() {
         console.log(' ');
         console.log('Transaction complete.');
         console.log(' ');
-        console.log('End of Queries ==========================================');
+        console.log('End of Queries ============================================');
         console.log(' ');
 
     } catch (error) {
