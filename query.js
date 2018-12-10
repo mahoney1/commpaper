@@ -21,7 +21,7 @@ class QueryUtils  {
     }
 
     // ===========================================================================================
-    // queryKeyByRange performs a range query based on the start and end keys provided.
+    // queryKeyByPartial performs a partial query based on the start and end keys provided.
 
     // Read-only function results are not typically submitted to ordering. If the read-only
     // results are submitted to ordering, or if the query is used in an update transaction
@@ -29,22 +29,21 @@ class QueryUtils  {
     // result sets are stable between endorsement time and commit time. The transaction is
     // invalidated by the committing peers if the result set has changed between endorsement
     // time and commit time.
-    // Therefore, range queries are a safe option for performing update transactions based on query results.
+    // 
     // ===========================================================================================
-    async queryKeyByRange(ctx, args) {
+    
+    async queryKeyByPartial(ctx, args) {
 
         if (arguments.length < 1) {
             throw new Error('Incorrect number of arguments. Expecting 2');
         }
 
-        //let prefix = arguments[0];
-        let startKey = ':' + arguments[1];
-        let endKey = ':' + arguments[2];
-        console.log('arg1 is ' + startKey + 'arg2 is ' + endKey);
-        //let resultsIterator = await this.ctx.stub.getStateByRange(startKey, endKey);
-        //let tmp = 'org.papernet.commercialpaperlist:"Magneto';
-        //console.log('"tmp is set to ' + tmp);
-        let resultsIterator = await this.ctx.stub.getStateByPartialCompositeKey(this.name,['"MagnetoCorp"', '"00"']);
+        let prefix = ':' + arguments[1];
+        //let endKey = ':' + arguments[2];
+        //console.log('arg1 is ' + startKy + 'arg2 is ' + endKey);
+        //let resultsIterator = await this.ctx.stub.getStateByRange(startKey, endKey); // doesnt work with composite keys
+        
+        let resultsIterator = await this.ctx.stub.getStateByPartialCompositeKey(this.name,[prefix]);
         let method = this.getAllResults;
         let results = await method(resultsIterator, false);
 
