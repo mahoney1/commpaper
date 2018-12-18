@@ -80,7 +80,9 @@
         	if (obj.currentState == '3') obj.currentState = 'REDEEMED';
                 if (obj.creator == 'Admin@org1.example.com') obj.creator = 'balaji';
         	if (!obj.currentState)  obj.currentState = save_state;
+                if (!obj.creator) obj.creator = save_creator;
                 save_state= obj.currentState;
+                save_creator= obj.creator;
     	    });
 	}
 
@@ -106,12 +108,12 @@
 		    columns:[ //Define Table Columns
                         {title:"Txn Id", field:"TxId", sorter:"string", formatter:"textarea", width:300},
                         {title:"Time Executed", field:"Timestamp", sorter:"string", width:250},
-                        {title:"Txn State", field:"Value.currentState", sorter:"string", width:150},
-                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:150},
-                        {title:"Current Owner", field:"Value.owner", sorter:"string", width:200},
-                        {title:"Price", field:"Value.price", formatter:"money", sorter:"string", width:150},
-                        {title:"Face Value", field:"Value.faceValue", formatter:"money", sorter:"string", width:150},
-                        {title:"Maturity Date", field:"Value.maturityDateTime", sorter:"string", align:"left", width:200},
+                        {title:"Txn State", field:"currentState", sorter:"string", width:150},
+                        {title:"Invoking ID", field:"creator", sorter:"string", width:150},
+                        {title:"Current Owner", field:"owner", sorter:"string", width:200},
+                        {title:"Price", field:"price", formatter:"money", sorter:"string", width:150},
+                        {title:"Face Value", field:"faceValue", formatter:"money", sorter:"string", width:150},
+                        {title:"Maturity Date", field:"maturityDateTime", sorter:"string", align:"left", width:200},
                     ],
 		    rowClick:function(e, row){ //trigger an alert message when the row is clicked
 		    alert("Row " + id + " Clicked!!!!");
