@@ -78,6 +78,7 @@
         	if (obj.currentState == '1') obj.currentState = 'ISSUED';
         	if (obj.currentState == '2') obj.currentState = 'BOUGHT';
         	if (obj.currentState == '3') obj.currentState = 'REDEEMED';
+                if (obj.creator == 'Admin@org1.example.com') obj.creator = 'balaji';
         	if (!obj.currentState)  obj.currentState = save_state;
                 save_state= obj.currentState;
     	    });
@@ -103,14 +104,14 @@
 		    history:true,
 		    paginationSize:40,
 		    columns:[ //Define Table Columns
-                        {title:"Txn Id", field:"TxId", sorter:"string", formatter:"textarea", width:40},
+                        {title:"Txn Id", field:"TxId", sorter:"string", formatter:"textarea", width:300},
                         {title:"Time Executed", field:"Timestamp", sorter:"string", width:250},
-                        {title:"Txn State", field:"currentState", sorter:"string", width:140},
-                        {title:"Invoking ID", field:"creator", sorter:"string", width:30},
-                        {title:"Current Owner", field:"owner", sorter:"string", width:250},
-                        {title:"Price", field:"price", formatter:"money", sorter:"string", width:150},
-                        {title:"Face Value", field:"faceValue", formatter:"money", sorter:"string", width:150},
-                        {title:"Maturity Date", field:"maturityDateTime", sorter:"string", align:"left", width:200},
+                        {title:"Txn State", field:"Value.currentState", sorter:"string", width:150},
+                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:150},
+                        {title:"Current Owner", field:"Value.owner", sorter:"string", width:200},
+                        {title:"Price", field:"Value.price", formatter:"money", sorter:"string", width:150},
+                        {title:"Face Value", field:"Value.faceValue", formatter:"money", sorter:"string", width:150},
+                        {title:"Maturity Date", field:"Value.maturityDateTime", sorter:"string", align:"left", width:200},
                     ],
 		    rowClick:function(e, row){ //trigger an alert message when the row is clicked
 		    alert("Row " + id + " Clicked!!!!");
@@ -129,6 +130,7 @@
         table.setData(actual_JSON); // this is where the JSON payload is loaded
 
         var myParam = location.search.split('myParam=')[1] ; // parameter supplied in URL is prefixed with 'myParam' FYI
+        
         // Set which Asset ID is being reported upon and display it to appropriate HTML element
         var element = document.getElementById("title");
 	element.innerHTML = "Asset ID: " + myParam; 
