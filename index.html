@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>Asset History Report</title>
+<title>Commercial Paper History Report</title>
 <head>
 
 <link href="https://unpkg.com/tabulator-tables@4.1.2/dist/css/tabulator_modern.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@
 <p>
 
 <script type="text/javascript">
-
+/** no jquery here  **/
 /****** some essential functions for our data - called further down ******/
 
         function loadJSON(callback) {   
@@ -78,6 +78,7 @@
         	if (obj.Value.currentState == '1') obj.Value.currentState = 'ISSUED';
         	if (obj.Value.currentState == '2') obj.Value.currentState = 'BOUGHT';
         	if (obj.Value.currentState == '3') obj.Value.currentState = 'REDEEMED';
+                if (obj.Value.creator == 'Admin@org1.example.com') obj.Value.creator = 'balaji';
     	    });
 	}
 
@@ -101,11 +102,11 @@
 		    history:true,
 		    paginationSize:40,
 		    columns:[ //Define Table Columns
-                        {title:"Txn Id", field:"TxId", sorter:"string", formatter:"textarea", width:40},
+                        {title:"Txn Id", field:"TxId", sorter:"string", formatter:"textarea", width:300},
                         {title:"Time Executed", field:"Timestamp", sorter:"string", width:250},
-                        {title:"Txn State", field:"Value.currentState", sorter:"string", width:140},
-                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:30},
-                        {title:"Current Owner", field:"Value.owner", sorter:"string", width:250},
+                        {title:"Txn State", field:"Value.currentState", sorter:"string", width:150},
+                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:150},
+                        {title:"Current Owner", field:"Value.owner", sorter:"string", width:200},
                         {title:"Price", field:"Value.price", formatter:"money", sorter:"string", width:150},
                         {title:"Face Value", field:"Value.faceValue", formatter:"money", sorter:"string", width:150},
                         {title:"Maturity Date", field:"Value.maturityDateTime", sorter:"string", align:"left", width:200},
@@ -132,7 +133,7 @@
 	element.innerHTML = "Asset ID: " + actual_JSON[0].Value.key ; 
  
 
-//trigger download -- these buttons are not implemented, just placeholder buttons shown for now
+//trigger download -- these jquery buttons are not implemented, just placeholder buttons shown for now
 	
 //$("#download-csv").click(function(){
     //$("#example-table").tabulator("download", "csv", "data.csv");
