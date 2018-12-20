@@ -40,7 +40,7 @@ class QueryUtils  {
 
         let prefix = ':' + arguments[1];
         //let endKey = ':' + arguments[2];
-        //console.log('arg1 is ' + startKy + 'arg2 is ' + endKey);
+        //console.log('arg1 is ' + startKey + 'arg2 is ' + endKey);
         //let resultsIterator = await this.ctx.stub.getStateByRange(startKey, endKey); // doesnt work with composite keys
         
         let resultsIterator = await this.ctx.stub.getStateByPartialCompositeKey(this.name,[prefix]);
@@ -147,8 +147,8 @@ class QueryUtils  {
     // getQueryResultForQueryString executes the passed in query string.
     // Result set is built and returned as a byte array containing the JSON results.
     // =========================================================================================
-    async getQueryResultForQueryString(ctx, self, queryString) { // self, queryString) {
-
+    async getQueryResultForQueryString(ctx, self, queryString) { 
+        
         console.log('- getQueryResultForQueryString queryString:\n' + queryString);
 
         const resultsIterator = await ctx.stub.getQueryResult(queryString);
@@ -156,7 +156,7 @@ class QueryUtils  {
 
         let results = await self.getAllResults(resultsIterator, false);
 
-        return results ; //return Buffer.from(JSON.stringify(results));
+        return results ; 
 
     }
 
