@@ -21,7 +21,7 @@ class QueryUtils  {
     }
 
     // ===========================================================================================
-    // queryKeyByPartial performs a partial query based on the start and end keys provided.
+    // queryKeyByPartial performs a partial query based on the namespace and key prefix provided
 
     // Read-only function results are not typically submitted to ordering. If the read-only
     // results are submitted to ordering, or if the query is used in an update transaction
@@ -38,11 +38,14 @@ class QueryUtils  {
             throw new Error('Incorrect number of arguments. Expecting 2');
         }
 
-        let prefix = ':' + arguments[1];
-        //let endKey = ':' + arguments[2];
-        //console.log('arg1 is ' + startKey + 'arg2 is ' + endKey);
-        //let resultsIterator = await this.ctx.stub.getStateByRange(startKey, endKey); // doesnt work with composite keys
+        let prefix =  arguments[1];  // prefix 'key' to finding using partial composite, left to right
+        //let endKey = ':' + arguments[2]; // range stuff
+        //console.log('arg1 is ' + startKey + 'arg2 is ' + endKey); // range stuff
+        //let resultsIterator = await this.ctx.stub.getStateByRange(startKey, endKey); // range doesnt work with composite keys
         
+        // ie namespace + prefix to assets etc eg 
+        // "Key":'org.papernet.commercialpaperlist"MagnetoCorp""00001"' [00001, 00002 etc]
+        // "Partial":'org.papernet.commercialpaperlist"MagnetoCorp"'
         let resultsIterator = await this.ctx.stub.getStateByPartialCompositeKey(this.name,[prefix]);
         let method = this.getAllResults;
         let results = await method(resultsIterator, false);
