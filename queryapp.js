@@ -16,10 +16,7 @@ SPDX-License-Identifier: Apache-2.0
 
 // Bring key classes into scope, most importantly Fabric SDK network class
 const fs = require('fs');
-const fsextra = require('fs-extra');
-const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
-const CommercialPaper = require('../contract/lib/paper.js');
 
 // A wallet stores a collection of identities for use
 const wallet = new FileSystemWallet('../identity/user/balaji/wallet');
@@ -35,9 +32,9 @@ async function main() {
 
         // Specify userName for network access
         const userName = 'Admin@org1.example.com';
-
-        // Load connection profile; will be used to locate a gateway
-        let connectionProfile = yaml.safeLoad(fs.readFileSync('../gateway/networkConnection.yaml', 'utf8'));
+        // path below is variable
+        let fpath = fs.readFileSync('/home/ibm/fabric-samples/commercial-paper/organization/magnetocorp/contract/local_fabric/connection.json', 'utf8');
+        let connectionProfile = JSON.parse(fpath);
 
         // Set connection options; identity and wallet
         let connectionOptions = {
