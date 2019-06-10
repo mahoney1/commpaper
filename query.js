@@ -34,12 +34,12 @@ class QueryUtils  {
     
     async queryKeyByPartial(ctx, args) {
 
-        if (arguments.length < 1) {
+        if (args.length < 1) {
             throw new Error('Incorrect number of arguments. Expecting 2');
         }
 
-        let prefix =  arguments[1];  // prefix 'key' to finding using partial composite, left to right
-        //let endKey = ':' + arguments[2]; // range stuff
+        let prefix =  args[1];  // prefix 'key' to finding using partial composite, left to right
+        //let endKey = ':' + args[2]; // range stuff
         //console.log('arg1 is ' + startKey + 'arg2 is ' + endKey); // range stuff
         //let resultsIterator = await this.ctx.stub.getStateByRange(startKey, endKey); // range doesnt work with composite keys
         
