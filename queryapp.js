@@ -18,8 +18,9 @@ SPDX-License-Identifier: Apache-2.0
 const fs = require('fs');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 
-// A wallet stores a collection of identities for use
-const wallet = new FileSystemWallet('../identity/user/balaji/wallet');
+// A wallet stores a collection of identities for use - this is presently in the user's HOME dir
+//const wallet = new FileSystemWallet('../identity/user/balaji/wallet');
+const wallet = new FileSystemWallet('/home/ibm/.fabric-vscode/local_fabric_wallet');
 
 // Main program function
 async function main() {
@@ -31,16 +32,18 @@ async function main() {
     try {
 
         // Specify userName for network access
-        const userName = 'Admin@org1.example.com';
+        //const userName = 'Admin@org1.example.com';
+        const userName = 'Balaji@DigiBank';
+        
         // path below is variable
-        let fpath = fs.readFileSync('/home/ibm/fabric-samples/commercial-paper/organization/magnetocorp/contract/local_fabric/connection.json', 'utf8');
+        let fpath = fs.readFileSync('/home/ibm/connection.json', 'utf8');
         let connectionProfile = JSON.parse(fpath);
 
         // Set connection options; identity and wallet
         let connectionOptions = {
             identity: userName,
             wallet: wallet,
-            discovery: { enabled:false, asLocalhost: true }
+            discovery: { enabled:true, asLocalhost: true }
         };
 
         // Connect to gateway using application specified parameters
