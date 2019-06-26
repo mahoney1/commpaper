@@ -96,7 +96,7 @@
    	var table = new Tabulator("#example-table", {
     	data:tabledata,  /// set the table data
     		    layout:"fitColumns", //fit columns to width of table (optional)
-		    height:190, // set height of table (optional)
+		    height:250, // set height of table (optional)
                     width:2000,
                     addRowPos:"top",
 		    history:true,
@@ -105,7 +105,7 @@
                         {title:"Txn Id", field:"TxId", sorter:"string", formatter:"textarea", width:300},
                         {title:"Time Executed", field:"Timestamp", sorter:"string", width:250},
                         {title:"Txn State", field:"Value.currentState", sorter:"string", width:150},
-                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:150},
+                        {title:"Invoking ID", field:"Value.creator", sorter:"string", width:250},
                         {title:"Current Owner", field:"Value.owner", sorter:"string", width:200},
                         {title:"Price", field:"Value.price", formatter:"money", sorter:"string", width:150},
                         {title:"Face Value", field:"Value.faceValue", formatter:"money", sorter:"string", width:150},
