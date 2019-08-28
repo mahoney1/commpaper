@@ -66,7 +66,7 @@ async function main() {
         console.log('=======================================================================');
         console.log(' ');
         // QUERY the history of a commercial paper providing it the Issuer/paper number combo below
-        let queryResponse = await contract.submitTransaction('queryHist', 'MagnetoCorp', '00001');
+        let queryResponse = await contract.evaluateTransaction('queryHist', 'MagnetoCorp', '00001');
         //let queryresult = CommercialPaper.fromBuffer(queryResponse);
         queryResponse = "data = '" + queryResponse.toString().replace(/\\"/g,'') + "'";
 
@@ -85,7 +85,7 @@ async function main() {
         console.log('==========================================================================');
         console.log(' ');
         console.log(' ');
-        const queryResponse2 = await contract.submitTransaction('queryOwner', 'MagnetoCorp', '00001');
+        const queryResponse2 = await contract.evaluateTransaction('queryOwner', 'MagnetoCorp', '00001');
 
         console.log('the query by OWNER response is ' + queryResponse2);
         console.log(' ');
