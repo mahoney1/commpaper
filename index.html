@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script>
 <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
-
+<script type="text/javascript" src="results.json"></script>
 </head>
 <body>
 <h1 style="background-color:LightBlue;">Digibank</h1>
@@ -36,35 +36,6 @@
 <script type="text/javascript">
 /** no jquery here  **/
 /****** some essential functions for our data - called further down ******/
-
-        function loadJSON(callback) {   
-
-    		var xobj = new XMLHttpRequest();
-        	xobj.overrideMimeType("application/json");
-    		xobj.open('GET', './results.json', false); // Replace 'my_data' with the path to your file
-    		xobj.onreadystatechange = function () {
-          		if (xobj.readyState == 4 && xobj.status == "200") {
-            		// Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            		callback(xobj.responseText);
-          		}
-    		};
-    		xobj.send(null);  
- 	}
-
-        // alternative method - but not needed at this point
-        /*
-        function XHR(file, callback){
-    		var xhr = new XMLHttpRequest();
-    		xhr.onreadystatechange = function(){
-        		if(xhr.readyState === 4 && xhr.status === 200){
-            		callback(xhr.responseText);
-        		}
-    		}
-    		xhr.open('GET', file, true);
-    		xhr.send();
-	}
-
-        */
 
        // Need to replace the 'State' numbers, with real status - the structure is below
        // the declared 'changeName' function (earlier) does the replace work and called later on
@@ -116,18 +87,14 @@
 		    },
 	});
 
-        //load sample data into the table by calling our load function
-        var actual_JSON="";
-        loadJSON(function(response) {
-    		actual_JSON = JSON.parse(response); 
-	});
-        
+        var actual_JSON = JSON.parse(data); // from the included results.json file - to avoid CORs - alternative is to use a web server
+
         //function to change the 'state' (paper State) to meaningful statuses for HTML rendering
         changeName(actual_JSON);
 
         table.setData(actual_JSON); // this is where the JSON payload is loaded
 
-        //console.log("actual JSON element is " + actual_JSON[0]);
+        console.log("actual JSON element is " + actual_JSON[0]);
         // Set which Asset ID is being reported upon and display it to appropriate element
         var element = document.getElementById("title");
 	element.innerHTML = "Asset ID: " + actual_JSON[0].Value.key ; 
