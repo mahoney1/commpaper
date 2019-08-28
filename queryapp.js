@@ -20,7 +20,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 
 // A wallet stores a collection of identities for use - this is presently in the user's HOME dir
 //const wallet = new FileSystemWallet('../identity/user/balaji/wallet');
-const wallet = new FileSystemWallet('/home/ibm/.fabric-vscode/local_fabric_wallet');
+const wallet = new FileSystemWallet('/home/demo/.fabric-vscode/wallets/local_fabric_wallet');
 
 // Main program function
 async function main() {
@@ -36,7 +36,7 @@ async function main() {
         const userName = 'Balaji@DigiBank';
         
         // path below is variable
-        let fpath = fs.readFileSync('/home/ibm/connection.json', 'utf8');
+        let fpath = fs.readFileSync('/home/demo/connection.json', 'utf8');
         let connectionProfile = JSON.parse(fpath);
 
         // Set connection options; identity and wallet
@@ -66,8 +66,9 @@ async function main() {
         console.log('=======================================================================');
         console.log(' ');
         // QUERY the history of a commercial paper providing it the Issuer/paper number combo below
-        const queryResponse = await contract.submitTransaction('queryHist', 'MagnetoCorp', '00001');
+        let queryResponse = await contract.submitTransaction('queryHist', 'MagnetoCorp', '00001');
         //let queryresult = CommercialPaper.fromBuffer(queryResponse);
+        queryResponse = "data = '" + queryResponse.toString().replace(/\\"/g,'') + "'";
 
         let file = await fs.writeFileSync('results.json', queryResponse, 'utf8');
         console.log('the query HISTORY response is ' + queryResponse);
