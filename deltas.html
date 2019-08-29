@@ -9,6 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script>
 <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+<script type="text/javascript" src="deltas.json"></script>
 
 </head>
 <body>
@@ -37,6 +38,8 @@
 
 /****** some essential functions for our data - called further down ******/
 
+	// no longer works, CORs issues with file load - would need to change to become proper http or https requests
+        /*
         function loadJSON(callback) {   
 
     		var xobj = new XMLHttpRequest();
@@ -52,7 +55,7 @@
  	}
 
         // alternative method - but not needed at this point
-        /*
+
         function XHR(file, callback){
     		var xhr = new XMLHttpRequest();
     		xhr.onreadystatechange = function(){
@@ -121,10 +124,7 @@
 	});
 
         //load sample data into the table by calling our load function
-        var actual_JSON="";
-        loadJSON(function(response) {
-    		actual_JSON = JSON.parse(response); 
-	});
+        var actual_JSON=JSON.parse(data);
         
         //function to change the 'state' (paper State) to meaningful statuses for HTML rendering
         changeName(actual_JSON);
