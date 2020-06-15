@@ -31,17 +31,57 @@ From a terminal window, clone the Fabric samples repo (and specifically the "mas
 git clone https://github.com/hyperledger/fabric-samples
 ```
 
-### Step 2. Launch VS Code and install the IBM Blockchain Platform extension for VS Code
+### Step 2. Launch the Microfab 'Commerce' blockchain network
+
+
+1. Pull the docker image for MicroFab. Microfab is a containerised Fabric network from the IBM Blockchain Platform team for development purposes.
+
+`docker pull sstone1/microfab:latest`
+
+2. Open a terminal window and paste in the following linux command to set this environment variable `MICROFAB_CONFIG` :
+
+```
+export MICROFAB_CONFIG='{
+    "endorsing_organizations":[
+        {
+            "name": "DigiBank"
+        },
+        {
+            "name": "Hedgematic"
+        },
+        {
+            "name": "MagnetoCorp"
+        }
+    ],
+    "channels":[
+        {
+            "name": "mychannel",
+            "endorsing_organizations":[
+                "DigiBank",
+                "Hedgematic",
+                "MagnetoCorp"
+            ]
+        }
+    ]
+}'
+```
+
+3. Now launch a MicroFab (a single containerised 'Commerce' Fabric development network, as per the JSON configuration above). The IBM Blockchain Platform VS Code extension has the ability to add and connect to this development environment (listening on port 8080) - it is an experimental feature that can be enabled under 'View....Command Palette'. The command to launch the MicroFab container environment is:
+
+
+`docker run --rm -ti -p 8080:8080 -e MICROFAB_CONFIG="${MICROFAB_CONFIG}" sstone1/microfab:latest`
+
+### Step 3. Launch VS Code and install the IBM Blockchain Platform extension for VS Code
 
 You can launch VS Code from your task bar, or by typing `code` in a terminal window.
 
-Now you need to install the IBM Blockchain Platform VS Code extension -- you'll need to install the minimum version VS Code (see pre-requisites) to do this successfully. To see if you have the right version, go to `Help` -> `Check for updates`. Next, click on the `Extensions` icon in the VS Code sidebar (left). Then, in the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` when prompted.
+Now you need to install the IBM Blockchain Platform VS Code extension -- you'll need to install the minimum version VS Code (see pre-requisites above) to do this successfully. To see if you have the right version of VS Code, go to `Help` -> `Check for updates`. Next, click on the `Extensions` icon in the VS Code sidebar (left). In the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` when prompted.
 
 **Figure 2. Find and install the extension from VS Code marketplace**
 
 ![Find and install the extension](images/installExtension.gif)
 
-### Step 3. Open the commercial paper contract
+### Step 4. Open the commercial paper contract
 
 1. In VS Code, choose **File** > **Open Folder**, and select the `contracts` folder by navigating to the `$HOME/fabric-samples/commercial-paper/organization/magnetocorp` directory. This is your top-level project folder for this tutorial.
 
@@ -59,17 +99,49 @@ Now you need to install the IBM Blockchain Platform VS Code extension -- you'll 
 
 ### Step 4. Package the smart contract
 
-
 1. Click on the IBM Blockchain Platform sidebar icon. When you do this the first time, you may get a message that the extension is "activating" in the output pane.
 
 2. Click on the "Smart Contracts" sub-menu to expand. Then click on the ellipsis (“...”) button and choose "Package Open Project" for installing onto a peer. The package will be called something like `papercontract@0.0.1`.
 
+  ![Package smart contract](images/package-contract.png)
+
 ### Step 5. Install the smart contract on a running Fabric
 
-1. Using the IBM Blockchain Platform from the left sidebar, start up a local development runtime Fabric environment -- the IBM Blockchain Platform VS Code extension conveniently provides these local dev operations (such as start, stop, teardown, restart, etc.) for you. If you've already got an IBM Blockchain Platform VS Code extension Fabric development environment running, that can be used, too (i.e. if its one started by the extension recently). 
+1. Using the IBM Blockchain Platform from the left sidebar, start up a MicroFab based 'Commerce' blockchain network - the IBM Blockchain Platform VS Code extension conveniently provides you with the ability to start a custom 'Commerce' Fabric, all running inside one docker container on your local virtual machine. 
   
-  Click on the ellipsis ("...") button under the **Fabric Environments** pane and "Start Fabric Runtime." Check your **Output** terminal pane at the bottom; you should see a message indicating that you've successfully submitted the proposal to join the channel. If this is the case, you can proceed.
+  Click on the ellipsis ("+") button under the **Fabric Environments** view and choose **Add a MicroFab network"** from the list.
   
+  ![Add a Microfab environment](images/add-microfab.png)
+  
+2. You will be prompted to provide a URL - accept the default URL provided (assuming you have no other Microfab environments running on your machine).
+
+![Add a Microfab environment](images/confirm-microfaburl.png)
+
+3. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added and Gateways and Wallets relating to that environment.
+
+![Add a Microfab environment](images/confirm-microfabname.png)
+
+4. Next, connect to the `Commerce` Fabric Environment, and click on the `+ Install` button to install the `papercontract@0.0.1` package - select the button to install on all three peers (from MagnetoCorp, DigiBank and Hedgematic) at this time - we will use `Hedgematic` later on in the tutorial series.
+
+![Add a Microfab environment](images/install-contractonpeers.png)
+  
+5. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
+
+![Add a Microfab environment](images/choose-contract.png)
+
+5. When prompted, enter `instantiate` (all lower case) as the function name to call, when instantiating.
+
+6. Press `enter` to accept the default for 'no parameters' to provide
+
+7. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
+
+You should get a message that the contract was instantiated successfully (and you can see the running contract under 'Instantiated' on the sidebar on the left).
+  
+![Add a Microfab environment](images/confirminstantiation.png)
+
+OK, we now have a deployed contract. The next item is to create some identities in the IBM Blockchain Platform extension.
+
+
 2. Under the **Fabric Environments** pane, expand the **Smart Contracts** twisty and click on the **+ Install** and select the smart contract packaged earlier. You should soon see a message indicating it was installed on the local peer (in the lower right).
   
 3. Next, choose the `papercontract` version 0.0.1 (see popup prompt) as the contract to install. You should then get a message in "Output" indicating that it was successfully installed.
