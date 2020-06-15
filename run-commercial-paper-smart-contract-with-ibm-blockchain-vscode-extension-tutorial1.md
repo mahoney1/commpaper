@@ -66,8 +66,7 @@ export MICROFAB_CONFIG='{
 }'
 ```
 
-3. Now launch a MicroFab (a single containerised 'Commerce' Fabric development network, as per the JSON configuration above). The IBM Blockchain Platform VS Code extension has the ability to add and connect to this development environment (listening on port 8080) - it is an experimental feature that can be enabled under 'View....Command Palette'. The command to launch the MicroFab container environment is:
-
+3. Next, launch a MicroFab Fabric environment (a single containerised 'Commerce' Fabric environment for development use). The IBM Blockchain Platform VS Code extension has the ability to add and connect to this development environment (listening on port 8080). Microfab is an experimental feature that can be enabled under 'View....Command Palette'. The command to launch THE MicroFab environment is:
 
 `docker run --rm -ti -p 8080:8080 -e MICROFAB_CONFIG="${MICROFAB_CONFIG}" sstone1/microfab:latest`
 
@@ -75,7 +74,7 @@ export MICROFAB_CONFIG='{
 
 You can launch VS Code from your task bar, or by typing `code` in a terminal window.
 
-Now you need to install the IBM Blockchain Platform VS Code extension -- you'll need to install the minimum version VS Code (see pre-requisites above) to do this successfully. To see if you have the right version of VS Code, go to `Help` -> `Check for updates`. Next, click on the `Extensions` icon in the VS Code sidebar (left). In the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` when prompted.
+Now you need to install the IBM Blockchain Platform VS Code extension (see pre-requisites above). To see if you have the right version of VS Code, go to `Help` -> `Check for updates`. In VS Code, click on the `Extensions` icon on the sidebar (left) - then, in the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` when prompted.
 
 **Figure 2. Find and install the extension from VS Code marketplace**
 
@@ -107,62 +106,47 @@ Now you need to install the IBM Blockchain Platform VS Code extension -- you'll 
 
 ### Step 5. Install the smart contract on a running Fabric
 
-1. Using the IBM Blockchain Platform from the left sidebar, start up a MicroFab based 'Commerce' blockchain network - the IBM Blockchain Platform VS Code extension conveniently provides you with the ability to start a custom 'Commerce' Fabric, all running inside one docker container on your local virtual machine. 
+1. In VS Code, under the menu option 'View...Command Palette' - select the 'IBM Blockchain Platform - enable or disable experimental features' checkbox and click 'OK'
+
+![Enable Microfab](images/experimental-feat.png)
+
+2. Using the IBM Blockchain Platform from the left sidebar, connect to the running MicroFab based 'Commerce' blockchain network - the feature mentioned conveniently provides you with the ability to connect to the sample Fabric, running inside one docker container on your local virtual machine. 
   
   Click on the ellipsis ("+") button under the **Fabric Environments** view and choose **Add a MicroFab network"** from the list.
   
   ![Add a Microfab environment](images/add-microfab.png)
   
-2. You will be prompted to provide a URL - accept the default URL provided (assuming you have no other Microfab environments running on your machine).
+3. You will be prompted to provide a URL - accept the default URL provided.
 
 ![Add a Microfab environment](images/confirm-microfaburl.png)
 
-3. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added and Gateways and Wallets relating to that environment.
+4. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added and Gateways and Wallets relating to that environment.
 
 ![Add a Microfab environment](images/confirm-microfabname.png)
 
-4. Next, connect to the `Commerce` Fabric Environment, and click on the `+ Install` button to install the `papercontract@0.0.1` package - select the button to install on all three peers (from MagnetoCorp, DigiBank and Hedgematic) at this time - we will use `Hedgematic` later on in the tutorial series.
+5. Next, connect to the `Commerce` Fabric Environment, and click on the `+ Install` button to install the `papercontract@0.0.1` package - select the button to install on all three peers (from MagnetoCorp, DigiBank and Hedgematic) at this time - we will use `Hedgematic` later on in the tutorial series.
 
 ![Add a Microfab environment](images/install-contractonpeers.png)
   
-5. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
+6. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
 
 ![Add a Microfab environment](images/choose-contract.png)
 
-5. When prompted, enter `instantiate` (all lower case) as the function name to call, when instantiating.
+7. When prompted, enter `instantiate` (all lower case) as the function name to call, when instantiating.
 
-6. Press `enter` to accept the default for 'no parameters' to provide
+8. Press `enter` to accept the default for 'no parameters' to provide
 
-7. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
+9. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
 
-You should get a message that the contract was instantiated successfully (and you can see the running contract under 'Instantiated' on the sidebar on the left).
+You should quickly get a message that the contract was instantiated successfully (and you can see the running contract under 'Instantiated' on the sidebar on the left).
   
 ![Add a Microfab environment](images/confirminstantiation.png)
 
-OK, we now have a deployed contract. The next item is to create some identities in the IBM Blockchain Platform extension.
+OK, we now have a deployed contract. For convenience, there are some generated/imported admin identities (for the respective 3 organisations) that we will use to interact with the 'Commerce' network.
 
-
-2. Under the **Fabric Environments** pane, expand the **Smart Contracts** twisty and click on the **+ Install** and select the smart contract packaged earlier. You should soon see a message indicating it was installed on the local peer (in the lower right).
   
-3. Next, choose the `papercontract` version 0.0.1 (see popup prompt) as the contract to install. You should then get a message in "Output" indicating that it was successfully installed.
+13. Paste in the string `org.papernet.commercialpaper:instantiate` when prompted to enter a function name to call, and hit ENTER.
   
-4. Under the sidebar panel **Fabric Environments**, click on **+ Instantiate** and choose to instantiate the contract `papercontract@0.0.1` that you installed in the previous step. 
-  
-5. Paste in the string `org.papernet.commercialpaper:instantiate` when prompted to enter a function name to call, and hit ENTER.
-  
-6. When prompted to enter optional arguments, hit ENTER to leave it blank (there are no arguments). Accept the defaults for optional subsequent parameter(s) by hitting ENTER.
-  
-  After a minute or so, you should see a progress message in the bottom right indicating that it is instantiating. Check the output pane to see if it was successfully instantiated.
-
-### Step 6: Create some blockchain identities and import them into the local Fabric wallet
-
-Prior to executing the smart contract transactions below, you should create some identities so that the transactions can be submitted/signed by different transacting identities; as this is a merely a sample contract, you will use the existing Development Fabric CA to issue them. (In reality, both MagnetoCorp and Digibank would issue their own respective organisational identities for their respective apps.) Complete the following steps:
-
-1. Under the **Fabric Environments** panel, locate "Nodes," expand it, highlight the CA node (for example, `ca.org1`), and right-click `.... Create Identity (....)`.
-
-2. When prompted for the identity, provide the name "Isabella@MagnetoCorp" and hit ENTER. You should immediately see that an "Isabella@MagnetoCorp" wallet has been created under the local Fabric wallet in the "Fabric Wallets" pane at the bottom.
-
-3. Next, perform Step 1 above once more, but this time create an identity for "Balaji@DigiBank" and check that it is listed in the local wallet under "Fabric Wallets." You'll use these identities to execute the transactions further down.
 
 ### Step 7. Execute the commercial paper smart contract transactions from client applications: MagnetoCorp and DigiBank
 
