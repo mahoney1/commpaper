@@ -1,7 +1,7 @@
 # Tutorial 1/3: "Run a commercial paper smart contract with the IBM Blockchain VS Code extension"
 
 These are step-by-step instructions to complete tutorial https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/ on IBM Developer, part of the Tutorial series https://developer.ibm.com/technologies/blockchain/series/blockchain-running-enhancing-commercial-paper-smart-contract
-For support issues with this tutorial, see my contact details in the [README](https://github.com/mahoney1/commpaper/blob/master/README.md) on how to get in touch.h
+For support issues with this tutorial, see my contact details in the [README](https://github.com/mahoney1/commpaper/blob/master/README.md) on how to get in touch.
 
 ## Preparation
 
@@ -38,7 +38,7 @@ git clone https://github.com/hyperledger/fabric-samples
 
 `docker pull sstone1/microfab:latest`
 
-2. Open a terminal window and paste in the following linux command to set this environment variable `MICROFAB_CONFIG` :
+2. Open a terminal window and copy/paste in the following linux command to set this environment variable `MICROFAB_CONFIG`  - don't forget to include the closing 'single-quote' at the end in your 'copy'!:
 
 ```
 export MICROFAB_CONFIG='{
@@ -96,7 +96,7 @@ Now you need to install the IBM Blockchain Platform VS Code extension (see pre-r
    **Figure 4. Choose the contract folder**
    ![Choose the contract folder](images/project-commpaper.png)
 
-### Step 4. Package the smart contract
+### Step 5. Package the smart contract
 
 1. Click on the IBM Blockchain Platform sidebar icon. When you do this the first time, you may get a message that the extension is "activating" in the output pane.
 
@@ -104,13 +104,13 @@ Now you need to install the IBM Blockchain Platform VS Code extension (see pre-r
 
   ![Package smart contract](images/package-contract.png)
 
-### Step 5. Install the smart contract on a running Fabric
+### Step 6. Connect to the 'Commerce' Fabric, install the smart contract 
 
 1. In VS Code, under the menu option 'View...Command Palette' - select the 'IBM Blockchain Platform - enable or disable experimental features' checkbox and click 'OK'
 
 ![Enable Microfab](images/experimental-feat.png)
 
-2. Using the IBM Blockchain Platform from the left sidebar, connect to the running MicroFab based 'Commerce' blockchain network - the feature mentioned conveniently provides you with the ability to connect to the sample Fabric, running inside one docker container on your local virtual machine. 
+2. Using the IBM Blockchain Platform from the left sidebar, connect to the running MicroFab based 'Commerce' blockchain network - the feature mentioned conveniently provides you with the ability to connect to the sample containerised Fabric, running in your local virtual machine. 
   
   Click on the ellipsis ("+") button under the **Fabric Environments** view and choose **Add a MicroFab network"** from the list.
   
@@ -120,7 +120,7 @@ Now you need to install the IBM Blockchain Platform VS Code extension (see pre-r
 
 ![Add a Microfab environment](images/confirm-microfaburl.png)
 
-4. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added and Gateways and Wallets relating to that environment.
+4. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added, and Gateways and Wallets relating to that environment. Note these artifacts are not persisted - they only exist for the life of the running container.
 
 ![Add a Microfab environment](images/confirm-microfabname.png)
 
@@ -132,58 +132,56 @@ Now you need to install the IBM Blockchain Platform VS Code extension (see pre-r
 
 ![Add a Microfab environment](images/choose-contract.png)
 
-7. When prompted, enter `instantiate` (all lower case) as the function name to call, when instantiating.
+7. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
 
 8. Press `enter` to accept the default for 'no parameters' to provide
 
 9. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
 
-You should quickly get a message that the contract was instantiated successfully (and you can see the running contract under 'Instantiated' on the sidebar on the left).
+You should quickly get a message that the contract was instantiated successfully (and you will see the running contract under 'Instantiated' on the sidebar on the left).
   
 ![Add a Microfab environment](images/confirminstantiation.png)
 
 OK, we now have a deployed contract. For convenience, there are some generated/imported admin identities (for the respective 3 organisations) that we will use to interact with the 'Commerce' network.
 
-  
-13. Paste in the string `org.papernet.commercialpaper:instantiate` when prompted to enter a function name to call, and hit ENTER.
-  
 
 ### Step 7. Execute the commercial paper smart contract transactions from client applications: MagnetoCorp and DigiBank
 
-So far, you've installed and instantiated your smart contract on the blockchain. Now it's time to try out the smart contract transactions.
+So far, you've installed and instantiated your smart contract on the Commerce blockchain network. Now it's time to try out the smart contract transactions.
 
-The commercial paper scenario describes contract transactions that are run by employees of two different organizations, MagnetoCorp and DigiBank. Using the IBM Blockchain Platform VS Code extension, you will execute the transactions in turn, connecting to the local Fabric Gateway, as each independent identity -- it's that easy to interact with your development blockchain network using different identities. (In the grander context, these identities would be consumed by the applications of the respective client organisations.) Figure 6 summarizes how they would interact using client applications and identities/wallets (provided to the employees of each company organization).
+The commercial paper scenario describes contract transactions that are run by employees of two of the organizations: MagnetoCorp and DigiBank. Using the IBM Blockchain Platform VS Code extension, you will execute the transactions in turn, connecting to the local Fabric Gateway, and interact with your development blockchain network using different identities. Figure 6 summarizes how they would interact using client applications and identities/wallets (provided to the employees of each company organization).
 
 **Figure 6. "Papernet" -- overview of transaction flow**
+  
 ![Transaction flow](images/flow-transaction.png)
 
-#### Transaction 1: Execute an `issue` transaction as Isabella@MagnetoCorp
+#### Transaction 1: Execute an `issue` transaction as MagnetoCorp
 
-1. From the IBM Blockchain Platform VS Code sidebar panel, locate the **Fabric Gateways** sub-panel and click once on the local Fabric Gateway. When prompted, select the `Isabella@MagnetoCorp` identity to connect with.
+1. From the IBM Blockchain Platform VS Code sidebar panel, locate the **Fabric Gateways** view and click on the `MagnetoCorp` Gateway. It will automatically connect with the single identity in the wallet, ie `MagnetoCorp Admin`. Expand the `mychannel` twisty, then  expand `papercontract@0.0.1` to reveal the list of transactions in the contract.
+
+![Connected as MagnetoCorp](images/magnetogw-connect.png)
+
+2. Highlight the "issue" transaction and right-click `Submit Transaction`. A pop-up window should appear at the top.
   
-2. Still under "Fabric Gateways', expand the "mychannel" twisty and then the "papercontract" twisty, in turn. You should see a list of transaction names, one of which is "issue."
-  
-3. Highlight the "issue" transaction and right-click "Submit Transaction." A pop-up window should appear at the top.
-  
-4. When prompted to enter parameters, copy and paste the following parameters (with double-quotes) **inside** the square brackets "[]" and hit ENTER, then hit ENTER again (to skip "transient data" entry):
-  
+3. When prompted, copy and paste the following parameters (incl. double-quotes) **inside** the existing square brackets "[]" and hit ENTER. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`.
+
   ```
   "MagnetoCorp","000010","2020-05-31","2020-11-30","5000000"
   ```
   
-5. Check the message (in the **Output** pane) indicating that this transaction was successfully submitted.
+4. Check the message (in the **Output** pane) indicating that this transaction was successfully submitted.
   
-6. Lastly, disconnect from the Gateway using the "disconnect" icon (from the "Fabric Gateways") sub-panel.
+5. Lastly, disconnect from the Gateway by clicking the 'Fabric Gateways' pane title, then click on the "disconnect" icon.
 
-#### Transaction 2. Execute a `buy` transaction as Balaji@DigiBank
+#### Transaction 2. Execute a `buy` transaction as DigiBank
 
-1. Click once on the `local Fabric` gateway and when prompted, choose the “Balaji@DigiBank” identity to connect with (and make sure it connects).
+1. Click once on the `DigiBank` Gateway - it will connect with the DigiBank Admin identity as the only one in the wallet.
   
-2. Still under "Fabric Gateways," expand the "mychannel" twisty and then the "papercontract" twisty, in turn.
+2. Expand the `mychannel` twisty and then the `papercontract@0.0.1` twisty, in turn.
 
-3. Now highlight the "buy" transaction from the list of transactions and right-click "Submit Transaction." A pop-up window will appear.
+3. Highlight, then right-click, the "buy" transaction and right-click "Submit Transaction." A pop-up window will appear.
 
-4. When prompted to enter parameters, copy and paste the following parameters (including the double-quotes) **inside** the square brackets, `[]`, and hit ENTER, then hit ENTER again (to skip the "transient data" entry):
+4. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`:
   
   ```
   "MagnetoCorp","000010","MagnetoCorp","DigiBank","4900000","2020-05-31"
@@ -191,13 +189,13 @@ The commercial paper scenario describes contract transactions that are run by em
   
 5. Check the message (in the output pane) indicating that this transaction was successfully submitted.
 
-#### Transaction 3. Execute a `redeem` transaction as Balaji@DigiBank -- six months later
+#### Transaction 3. Execute a `redeem` transaction as DigiBank -- six months later
 
-The time has come in this commercial paper's lifecycle for the current owner (DigiBank) to redeem the commercial paper at face value and recoup the investment outlay. Typically, a client application script called `redeem.js` would perform this task from a client and related identity perspective. You can execute this transaction using the VS Code extension, using Balaji's certificate (from his wallet), as it is currently connected as a client identity.
+Some months later in the commercial paper's lifecycle, the current owner (DigiBank) wishes to redeem the commercial paper at face value and recoup the investment outlay. Typically, a client application would perform this task from a client and related identity perspective. You can, once again, execute this transaction using the VS Code extension, using an identity from DigiBank.
 
 1. Now highlight the `redeem` transaction from the list of transactions and right-click "Submit Transaction." A pop-up window will appear.
   
-2. When prompted to enter parameters, copy and paste the following parameters (including the double-quotes) **inside** the square brackets, `[]`, and hit ENTER, then hit ENTER again (to skip the "transient data" entry):
+2. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`, and hit ENTER, then hit ENTER again (to skip Transient Data and Peer Targeting):
   
   ```
   "MagnetoCorp","000010","DigiBank","2020-11-30"
@@ -205,22 +203,22 @@ The time has come in this commercial paper's lifecycle for the current owner (Di
   
 3. Check the message (in the output pane) indicating that this redeem transaction was successfully submitted.
 
-Well done! You've completed this tutorial and successfully interacted with the smart contract, which demonstrates a simple lifecycle of a commercial paper instance (with 3 transactions) on the blockchain.
+Well done! You've completed this tutorial and successfully interacted with the smart contract, which demonstrates a simple lifecycle of a commercial paper instance (with 3 transactions) on the Commerce blockchain network.
 
 ## Summary
 
-You've now learned how to deploy a simple yet substantial commercial paper smart contract sample to a Fabric blockchain network. You’ve seen how it can create, package, install, and instantiate a smart contract and use the IBM Blockchain Platform [VS Code extension](https://marketplace.visualstudio.com/items?itemName=IBMBlockchain.ibm-blockchain-platform) to submit transactions as different identities, which are recorded on the ledger. (Clearly, the extension provides a lot more -- such as the develop/debug/test lifecycle of a developer -- beyond the scope of this particular tutorial.)
+You've learned how to deploy a simple yet substantial commercial paper smart contract sample to a Commerce Fabric blockchain network involving multiple organisations. You’ve seen how it can explore, package, install, and instantiate a smart contract on that network, and how to use the IBM Blockchain Platform [VS Code extension](https://marketplace.visualstudio.com/items?itemName=IBMBlockchain.ibm-blockchain-platform) to submit transactions as different organisations, which are recorded on the ledger. (Clearly, the extension provides a lot more -- such as the develop/debug/test lifecycle of a developer -- beyond the scope of this simple tutorial.)
 
-[My next tutorial](https://developer.ibm.com/tutorials/queries-commercial-paper-smart-contract-ibm-blockchain-vscode-extension/) will concentrate on another application perspective, querying the ledger -- for example, getting the history of transactions for a particular asset. I'll answer questions like:
+[My next tutorial](https://developer.ibm.com/tutorials/queries-commercial-paper-smart-contract-ibm-blockchain-vscode-extension/) will concentrate on another application perspective, querying the the history or lifecycle of an asset on the ledger. I'll answer questions like:
 
 * What was the "paper" trail? (Get it?)
 * Who performed the transactions (the identities involved)?
 * Exactly when did they take place?
-* What exactly were the changes made (i.e. the "deltas") for each transaction in that history?
+* What exactly were the changes made for each transaction in that history?
 
-This means adding query functionality to the smart contract, as well as some "getters" to get you the right information from the historical transactions. These results are sent back to the respective application clients.
+This means adding query functionality to the smart contract, as well as some "standard functions to get you the right information from the historical transactions. These results are sent back to application clients to consume.
 
-To complete the next tutorials (Parts 2 and 3), you'll need to clone some sample artifacts (code, script files, etc.) from GitHub. To do this, open up a terminal window, locate your desired directory, and paste in the following commands:
+In order to complete the next tutorials (Parts 2 and 3), you'll need to clone some sample artifacts (code, script files, etc.) from GitHub. To do this, open up a terminal window, locate your desired directory, and paste in the following commands:
 
 ```
 cd $HOME
