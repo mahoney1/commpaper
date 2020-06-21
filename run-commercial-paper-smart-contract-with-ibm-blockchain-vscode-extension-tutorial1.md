@@ -68,7 +68,9 @@ export MICROFAB_CONFIG='{
 
 3. Next, launch your Microfab Fabric environment (ie a single containerised 'Commerce' Fabric environment for development use). The IBM Blockchain Platform VS Code extension has the ability to add and connect to this development environment (container is listening on port 8080 by default). Microfab is an experimental feature - it can be enabled once you have installed the extension below.
 
-    ![Experimental feature](/tutorial1/experimental-feat.png)
+<p>
+    <img src="/img/tutorial1/experimental-feat.png" title="experimental feature" alt="experimental feature" />
+</p>
  
 4. The command to launch the MicroFab environment is:
 
@@ -82,9 +84,11 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 **Figure 1. Find and install the extension from VS Code marketplace**
 
-    ![Install the extension](/tutorial1/installExtension.gif)
- 
-    <img src="img/tutorial1/installExtension.gif" title="install the extension" alt="Find the extension">
+
+<p>
+    <img src="/img/tutorial1/installExtension.gif" title="install the extension" alt="Find the extension" />
+</p>
+   
 
 2. In VS Code, click on the `Extensions` icon on the sidebar (left) - then, in the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` if prompted.
 
@@ -95,10 +99,10 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
   
 **Figure 2. Open the commercial paper sample project in VS Code**
 
-    ![Open the Contract folder](/tutorial1/papercontract.png)
-    
-    <img src="./img/tutorial1/papercontract.png" title="Open contract folder" alt="Open contract folder">
- 
+
+</p>    
+    <img src="/img/tutorial1/papercontract.png" title="Open contract folder" alt="Open contract folder" />
+</p>
  
 2. Explore the `papercontract.js` file, which is located in the `lib` subfolder. It effectively orchestrates the logic for the different smart contract transaction functions (issue, buy, redeem, etc.), and is underpinned by essential core functions (in the sample contract) that interact with the ledger. The link provided in the introduction section above explains the concepts, themes, and programmatic approach to writing contracts using the commercial paper scenario. Take some time to read that explainer and then resume here.
 
