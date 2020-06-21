@@ -23,8 +23,9 @@ MagnetoCorp manufactures electric vehicles and has just landed a big contract. T
 
 #### Overview diagram
 
-
+<p>
     <img src="/img/tutorial1/overview.png" title="Commercial Paper scenario overview" alt="scenario overview" />
+</p>
 
 
 ## Steps
@@ -87,6 +88,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 1.  you need to install the IBM Blockchain Platform VS Code extension (see pre-requisites above). If you already had VS Code installed, you should check first that you have a supported version of VS Code for the extension (go to `Help` -> `Check for updates`).
 
+
 **Figure 1. Find and install the extension from VS Code marketplace**
 
 
@@ -110,6 +112,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 2. Explore the `papercontract.js` file, which is located in the `lib` subfolder. It effectively orchestrates the logic for the different smart contract transaction functions (issue, buy, redeem, etc.), and is underpinned by essential core functions (in the sample contract) that interact with the ledger. The link provided in the introduction section above explains the concepts, themes, and programmatic approach to writing contracts using the commercial paper scenario. Take some time to read that explainer and then resume here.
 
 3. Go back to the `contract` folder by clicking on the folder name on the left in the VS Code Explorer. It's important to do so before the next step.
+  
   
 **Figure 3. Choose the contract folder**
 
@@ -137,35 +140,30 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 2. Using the IBM Blockchain Platform extension sidebar, connect to the running Microfab based 'Commerce' blockchain network - the feature mentioned conveniently provides you with the ability to connect to the sample containerised Fabric, running in your local virtual machine. 
   
-  Click on the ellipsis ("+") button under the **Fabric Environments** view and choose **Add a MicroFab network"** from the list.
+3. Click on the ellipsis ("+") button under the **Fabric Environments** view and choose **Add a MicroFab network"** from the list.
  
-<p>
     <img src="./img/tutorial1/add-microfab.png" title="Add a Microfab environment" alt="Add a Microfab environment" />
-</p>
+
   
-3. You will be prompted to provide a URL - accept the default URL provided.
+4. You will be prompted to provide a URL - accept the default URL provided.
 
-<p>
     <img src="./img/tutorial1/confirm-microfaburl.png" title="Confirm Microfab URL" alt="Confirm Microfab URL" />
-</p>
 
-4. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added, and Gateways and Wallets relating to that environment. Note these artifacts are not persisted - they only exist for the life of the running container.
+5. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added, and Gateways and Wallets relating to that environment. Note these artifacts are not persisted - they only exist for the life of the running container.
 
-<p>
     <img src="./img/tutorial1/confirm-microfabname.png" title="Confirm Microfab Name" alt="Confirm Microfab Name" />
-</p>
+
 
 5. Next, connect to the `Commerce` Fabric Environment, and click on the `+ Install` button to install the `papercontract@0.0.1` package - select the button to install on all three peers (from MagnetoCorp, DigiBank and Hedgematic) at this time - we will use `Hedgematic` later on in the tutorial series.
 
-<p>
     <img src="./img/tutorial1/install-contractonpeers.png" title="Install contract on all peers" alt="Install contract on all peers" />
-</p>
+
 
 6. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
 
-<p>
+
     <img src="./img/tutorial1/choose-contract.png" title="Choose contract" alt="Choose contract" />
-</p>
+
 
 7. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
 
@@ -175,9 +173,8 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 You should quickly get a message that the contract was instantiated successfully (and you will see the running contract under 'Instantiated' on the sidebar on the left).
   
-<p>
     <img src="./img/tutorial1/confirminstantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
-</p>
+    
 
 OK, we now have a deployed contract. For convenience, Microfab generates some default admin identities (for the respective 3 organisations) that we will use in this tutorial to interact with the 'Commerce' network.
 
@@ -190,9 +187,9 @@ The commercial paper scenario describes contract transactions that are run by em
 
 **Figure 4. "Papernet" -- overview of transaction flow**
  
-<p>
+
     <img src="./img/tutorial1/flow-transaction.png" title="Transaction Flow - overview" alt="Transaction Flow - overview" />
-</p>
+
 
 #### Transaction 1: Execute an `issue` transaction as MagnetoCorp
 
