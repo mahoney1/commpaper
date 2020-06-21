@@ -82,7 +82,8 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 **Figure 1. Find and install the extension from VS Code marketplace**
 
-    <img src="./img/tutorial1/installExtension.gif" title="Find and install the extension" alt="Find the extension">
+
+    <img src="./img/tutorial1/installExtension.gif" title="install the extension" alt="Find the extension">
 
 2. In VS Code, click on the `Extensions` icon on the sidebar (left) - then, in the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` if prompted.
 
@@ -93,7 +94,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
   
 **Figure 2. Open the commercial paper sample project in VS Code**
 
-    <img src="./img/tutorial1/papercontract.png" title="Open the Commercial paper contract folder" alt="Open the Commercial paper contract">
+    <img src="./img/tutorial1/papercontract.png" title="Open contract folder" alt="Open contract folder">
  
  
 2. Explore the `papercontract.js` file, which is located in the `lib` subfolder. It effectively orchestrates the logic for the different smart contract transaction functions (issue, buy, redeem, etc.), and is underpinned by essential core functions (in the sample contract) that interact with the ledger. The link provided in the introduction section above explains the concepts, themes, and programmatic approach to writing contracts using the commercial paper scenario. Take some time to read that explainer and then resume here.
