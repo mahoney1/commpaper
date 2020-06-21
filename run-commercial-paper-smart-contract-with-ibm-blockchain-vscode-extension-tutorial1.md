@@ -68,8 +68,8 @@ export MICROFAB_CONFIG='{
 
 3. Next, launch your Microfab Fabric environment (ie a single containerised 'Commerce' Fabric environment for development use). The IBM Blockchain Platform VS Code extension has the ability to add and connect to this development environment (container is listening on port 8080 by default). Microfab is an experimental feature - it can be enabled once you have installed the extension below.
 
-    <img src="./img/tutorial1/experimental-feat.png" title="Experimental feature" alt="Enable Microfab feature">
-
+    ![Experimental feature](/tutorial1/experimental-feat.png)
+ 
 4. The command to launch the MicroFab environment is:
 
 `docker run --rm -ti -p 8080:8080 -e MICROFAB_CONFIG="${MICROFAB_CONFIG}" sstone1/microfab:latest`
@@ -82,8 +82,9 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 **Figure 1. Find and install the extension from VS Code marketplace**
 
-
-    <img src="./img/tutorial1/installExtension.gif" title="install the extension" alt="Find the extension">
+    ![Install the extension](/tutorial1/installExtension.gif)
+ 
+    <img src="img/tutorial1/installExtension.gif" title="install the extension" alt="Find the extension">
 
 2. In VS Code, click on the `Extensions` icon on the sidebar (left) - then, in the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` if prompted.
 
@@ -94,6 +95,8 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
   
 **Figure 2. Open the commercial paper sample project in VS Code**
 
+    ![Open the Contract folder](/tutorial1/papercontract.png)
+    
     <img src="./img/tutorial1/papercontract.png" title="Open contract folder" alt="Open contract folder">
  
  
