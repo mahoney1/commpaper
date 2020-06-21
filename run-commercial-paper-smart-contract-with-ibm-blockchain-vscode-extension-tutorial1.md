@@ -172,9 +172,6 @@ So far, you've installed and instantiated your smart contract on the Commerce bl
 
 The commercial paper scenario describes contract transactions that are run by employees of two of the organizations: MagnetoCorp and DigiBank. Using the IBM Blockchain Platform VS Code extension, you will execute the transactions in turn, connecting to the local Fabric Gateway, and interact with your development blockchain network using different identities. Figure 6 summarizes how they would interact using client applications and identities/wallets (provided to the employees of each company organization).
 
-**Figure: "Papernet" -- overview of transaction flow**
- 
- 
     <img src="./img/tutorial1/flow-transaction.png" title="Transaction Flow - overview" alt="Transaction Flow - overview" />
 
 
