@@ -43,7 +43,9 @@ git clone https://github.com/hyperledger/fabric-samples
 
 1. Pull the docker image for Microfab. Microfab is a containerised Fabric network from the IBM Blockchain Platform team for development purposes.
 
-`docker pull sstone1/microfab:latest`
+```
+docker pull sstone1/microfab:latest
+```
 
 2. Open a terminal window and copy/paste in the following linux command to set this environment variable `MICROFAB_CONFIG`  - don't forget to include the closing 'single-quote' at the end in your 'copy'!:
 
@@ -80,7 +82,9 @@ export MICROFAB_CONFIG='{
  
 4. The command to launch the MicroFab environment is:
 
-`docker run --rm -ti -p 8080:8080 -e MICROFAB_CONFIG="${MICROFAB_CONFIG}" sstone1/microfab:latest`
+```
+docker run --rm -ti -p 8080:8080 -e MICROFAB_CONFIG="${MICROFAB_CONFIG}" sstone1/microfab:latest
+```
 
 ### Step 3. Launch VS Code and install the IBM Blockchain Platform extension for VS Code
 
@@ -114,7 +118,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 2. Click inside the file `package.json` in the Explorer palette and edit the “name” field; change the name to `papercontract`. Next click CONTROL + S as a VS Code shortcut to save the file.
 
-    <img src="./img/tutorial1/package-name.png" title="Package smart contract" alt="Package smart contract" />
+    <img src="/img/tutorial1/package-name.png" title="Package smart contract" alt="Package smart contract" />
 
 3. Click on the "Smart Contracts" sub-menu to expand. Then click on the ellipsis (“...”) button and choose "Package Open Project" for installing onto a peer. The package will be called something like `papercontract@0.0.1`.
 
@@ -123,33 +127,33 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 1. In VS Code, under the menu option 'View...Command Palette' - select the 'IBM Blockchain Platform - enable or disable experimental features' checkbox and click 'OK'
 
-    <img src="./img/tutorial1/experimental-feat.png" title="Experimental feature" alt="Enable Microfab feature" />
+    <img src="/img/tutorial1/experimental-feat.png" title="Experimental feature" alt="Enable Microfab feature" />
 
 2. Using the IBM Blockchain Platform extension sidebar, connect to the running Microfab based 'Commerce' blockchain network - the feature mentioned conveniently provides you with the ability to connect to the sample containerised Fabric, running in your local virtual machine. 
   
 3. Click on the ellipsis ("+") button under the **Fabric Environments** view and choose **Add a MicroFab network"** from the list.
  
-    <img src="./img/tutorial1/add-microfab.png" title="Add a Microfab environment" alt="Add a Microfab environment" />
+    <img src="/img/tutorial1/add-microfab.png" title="Add a Microfab environment" alt="Add a Microfab environment" />
 
   
 4. You will be prompted to provide a URL - accept the default URL provided.
 
-    <img src="./img/tutorial1/confirm-microfaburl.png" title="Confirm Microfab URL" alt="Confirm Microfab URL" />
+    <img src="/img/tutorial1/confirm-microfaburl.png" title="Confirm Microfab URL" alt="Confirm Microfab URL" />
 
 5. Provide the environment with a name of 'Commerce' - you should see a popup message (bottom right) confirming it was successfully added. Also on the left, you'll see the environment added, and Gateways and Wallets relating to that environment. Note these artifacts are not persisted - they only exist for the life of the running container.
 
-    <img src="./img/tutorial1/confirm-microfabname.png" title="Confirm Microfab Name" alt="Confirm Microfab Name" />
+    <img src="/img/tutorial1/confirm-microfabname.png" title="Confirm Microfab Name" alt="Confirm Microfab Name" />
 
 
 6. Next, connect to the `Commerce` Fabric Environment, and click on the `+ Install` button to install the `papercontract@0.0.1` package - select the button to install on all three peers (from MagnetoCorp, DigiBank and Hedgematic) at this time - we will use `Hedgematic` later on in the tutorial series.
 
-    <img src="./img/tutorial1/install-contractonpeers.png" title="Install contract on all peers" alt="Install contract on all peers" />
+    <img src="/img/tutorial1/install-contractonpeers.png" title="Install contract on all peers" alt="Install contract on all peers" />
 
 
 7. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
 
 
-    <img src="./img/tutorial1/choose-contract.png" title="Choose contract" alt="Choose contract" />
+    <img src="/img/tutorial1/choose-contract.png" title="Choose contract" alt="Choose contract" />
 
 
 8. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
@@ -158,7 +162,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 10. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
 
-    <img src="./img/tutorial1/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
+    <img src="/img/tutorial1/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
     
     You should quickly get a message that the contract was instantiated successfully (and you will see the running contract under 'Instantiated' on the sidebar on the left).
     
@@ -172,14 +176,14 @@ So far, you've installed and instantiated your smart contract on the Commerce bl
 
 The commercial paper scenario describes contract transactions that are run by employees of two of the organizations: MagnetoCorp and DigiBank. Using the IBM Blockchain Platform VS Code extension, you will execute the transactions in turn, connecting to the local Fabric Gateway, and interact with your development blockchain network using different identities. Figure 6 summarizes how they would interact using client applications and identities/wallets (provided to the employees of each company organization).
 
-    <img src="./img/tutorial1/flow-transaction.png" title="Transaction Flow - overview" alt="Transaction Flow - overview" />
+<img src="/img/tutorial1/flow-transaction.png" title="Transaction Flow - overview" alt="Transaction Flow - overview" />
 
 
 #### Transaction 1: Execute an `issue` transaction as MagnetoCorp
 
 1. From the IBM Blockchain Platform VS Code sidebar panel, locate the **Fabric Gateways** view and click on the `MagnetoCorp` Gateway. It will automatically connect with the single identity in the wallet, ie `MagnetoCorp Admin`. Expand the `mychannel` twisty, then  expand `papercontract@0.0.1` to reveal the list of transactions in the contract.
 
-    <img src="./img/tutorial1/magnetogw-connect.png" title="Connect as MagnetoCorp" alt="Connect as MagnetoCorp" />
+    <img src="/img/tutorial1/magnetogw-connect.png" title="Connect as MagnetoCorp" alt="Connect as MagnetoCorp" />
 
 2. Highlight the "issue" transaction and right-click `Submit Transaction`. A pop-up window should appear at the top.
   
@@ -192,6 +196,7 @@ The commercial paper scenario describes contract transactions that are run by em
 4. Check the message (in the **Output** pane) indicating that this transaction was successfully submitted.
   
 5. Lastly, disconnect from the Gateway by clicking the 'Fabric Gateways' pane title, then click on the "disconnect" icon.
+
 
 #### Transaction 2. Execute a `buy` transaction as DigiBank
 
