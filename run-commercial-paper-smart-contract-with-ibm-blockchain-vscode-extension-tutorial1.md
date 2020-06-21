@@ -204,9 +204,7 @@ The commercial paper scenario describes contract transactions that are run by em
 
 1. From the IBM Blockchain Platform VS Code sidebar panel, locate the **Fabric Gateways** view and click on the `MagnetoCorp` Gateway. It will automatically connect with the single identity in the wallet, ie `MagnetoCorp Admin`. Expand the `mychannel` twisty, then  expand `papercontract@0.0.1` to reveal the list of transactions in the contract.
 
-<p>
     <img src="./img/tutorial1/magnetogw-connect.png" title="Connect as MagnetoCorp" alt="Connect as MagnetoCorp" />
-</p>
 
 2. Highlight the "issue" transaction and right-click `Submit Transaction`. A pop-up window should appear at the top.
   
