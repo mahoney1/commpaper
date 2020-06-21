@@ -23,8 +23,8 @@ MagnetoCorp manufactures electric vehicles and has just landed a big contract. T
 
 #### Overview diagram
 
-    <img src="/img/tutorial1/overview.png" title="Commercial Paper scenario overview" alt="scenario overview" />
 
+    <img src="/img/tutorial1/overview.png" title="Commercial Paper scenario overview" alt="scenario overview" />
 
 
 ## Steps
