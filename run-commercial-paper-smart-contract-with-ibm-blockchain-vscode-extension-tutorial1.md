@@ -88,24 +88,16 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 1.  you need to install the IBM Blockchain Platform VS Code extension (see pre-requisites above). If you already had VS Code installed, you should check first that you have a supported version of VS Code for the extension (go to `Help` -> `Check for updates`).
 
-
-**Figure 1. Find and install the extension from VS Code marketplace**
-
-
     <img src="/img/tutorial1/installExtension.gif" title="install the extension" alt="Find the extension" />
 
    
-
 2. In VS Code, click on the `Extensions` icon on the sidebar (left) - then, in the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` if prompted.
 
 
 ### Step 4. Open the commercial paper contract
 
-1. Still in VS Code, from the menu choose **File** > **Open Folder**, and select the `contracts` folder, after navigating to the `$HOME/fabric-samples/commercial-paper/organization/magnetocorp` directory. Click 'OK' to open it. Click 'Yes' if prompted to save this workspace configuration to a file. This is your top-level project folder for this tutorial.
-  
-**Figure 2. Open the commercial paper sample project in VS Code**
+1. Still in VS Code, from the menu choose **File** > **Open Folder**, and select the `contracts` folder, after navigating to the `$HOME/fabric-samples/commercial-paper/organization/magnetocorp` directory. Click 'OK' to open it. Click 'Yes' if prompted to save this workspace configuration to a file. This is your top-level project folder for this tutorial. 
 
-    
     <img src="/img/tutorial1/papercontract.png" title="Open contract folder" alt="Open contract folder" />
 
  
@@ -113,10 +105,6 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 3. Go back to the `contract` folder by clicking on the folder name on the left in the VS Code Explorer. It's important to do so before the next step.
   
-  
-**Figure 3. Choose the contract folder**
-
-
     <img src="/img/tutorial1/project-commpaper.png" title="Return to contract folder" alt="Return to contract folder" />
 
 
@@ -127,7 +115,6 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 2. Click inside the file `package.json` in the Explorer palette and edit the “name” field; change the name to `papercontract`. Next click CONTROL + S as a VS Code shortcut to save the file.
 
     <img src="./img/tutorial1/package-name.png" title="Package smart contract" alt="Package smart contract" />
-
 
 3. Click on the "Smart Contracts" sub-menu to expand. Then click on the ellipsis (“...”) button and choose "Package Open Project" for installing onto a peer. The package will be called something like `papercontract@0.0.1`.
 
@@ -171,9 +158,9 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 9. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
 
-You should quickly get a message that the contract was instantiated successfully (and you will see the running contract under 'Instantiated' on the sidebar on the left).
-  
-    <img src="./img/tutorial1/confirminstantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
+    <img src="./img/tutorial1/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
+    
+    You should quickly get a message that the contract was instantiated successfully (and you will see the running contract under 'Instantiated' on the sidebar on the left).
     
 
 OK, we now have a deployed contract. For convenience, Microfab generates some default admin identities (for the respective 3 organisations) that we will use in this tutorial to interact with the 'Commerce' network.
