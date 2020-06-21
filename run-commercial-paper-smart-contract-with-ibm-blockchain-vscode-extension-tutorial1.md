@@ -32,7 +32,7 @@ MagnetoCorp manufactures electric vehicles and has just landed a big contract. T
 
 ### Step 1. Get the commercial paper sample in Fabric Samples
 
-From a terminal window, clone the Fabric samples repo (and specifically the "master" branch) to your $HOME directory:
+1. From a terminal window, clone the Fabric samples repo (and specifically the "master" branch) to your $HOME directory:
 
 ```
 git clone https://github.com/hyperledger/fabric-samples
@@ -141,22 +141,22 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
     <img src="./img/tutorial1/confirm-microfabname.png" title="Confirm Microfab Name" alt="Confirm Microfab Name" />
 
 
-5. Next, connect to the `Commerce` Fabric Environment, and click on the `+ Install` button to install the `papercontract@0.0.1` package - select the button to install on all three peers (from MagnetoCorp, DigiBank and Hedgematic) at this time - we will use `Hedgematic` later on in the tutorial series.
+6. Next, connect to the `Commerce` Fabric Environment, and click on the `+ Install` button to install the `papercontract@0.0.1` package - select the button to install on all three peers (from MagnetoCorp, DigiBank and Hedgematic) at this time - we will use `Hedgematic` later on in the tutorial series.
 
     <img src="./img/tutorial1/install-contractonpeers.png" title="Install contract on all peers" alt="Install contract on all peers" />
 
 
-6. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
+7. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
 
 
     <img src="./img/tutorial1/choose-contract.png" title="Choose contract" alt="Choose contract" />
 
 
-7. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
+8. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
 
-8. Press `enter` to accept the default for 'no parameters' to provide
+9. Press `enter` to accept the default for 'no parameters' to provide
 
-9. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
+10. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
 
     <img src="./img/tutorial1/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
     
@@ -172,9 +172,9 @@ So far, you've installed and instantiated your smart contract on the Commerce bl
 
 The commercial paper scenario describes contract transactions that are run by employees of two of the organizations: MagnetoCorp and DigiBank. Using the IBM Blockchain Platform VS Code extension, you will execute the transactions in turn, connecting to the local Fabric Gateway, and interact with your development blockchain network using different identities. Figure 6 summarizes how they would interact using client applications and identities/wallets (provided to the employees of each company organization).
 
-**Figure 4. "Papernet" -- overview of transaction flow**
+**Figure: "Papernet" -- overview of transaction flow**
  
-
+ 
     <img src="./img/tutorial1/flow-transaction.png" title="Transaction Flow - overview" alt="Transaction Flow - overview" />
 
 
