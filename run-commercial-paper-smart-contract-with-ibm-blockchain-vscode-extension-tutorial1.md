@@ -23,9 +23,8 @@ MagnetoCorp manufactures electric vehicles and has just landed a big contract. T
 
 #### Overview diagram
 
-<p>
     <img src="/img/tutorial1/overview.png" title="Commercial Paper scenario overview" alt="scenario overview" />
-</p>
+
 
 
 ## Steps
@@ -75,9 +74,8 @@ export MICROFAB_CONFIG='{
 
 3. Next, launch your Microfab Fabric environment (ie a single containerised 'Commerce' Fabric environment for development use). The IBM Blockchain Platform VS Code extension has the ability to add and connect to this development environment (container is listening on port 8080 by default). Microfab is an experimental feature - it can be enabled once you have installed the extension below.
 
-<p>
     <img src="/img/tutorial1/experimental-feat.png" title="experimental feature" alt="experimental feature" />
-</p>
+
  
 4. The command to launch the MicroFab environment is:
 
@@ -92,9 +90,8 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 **Figure 1. Find and install the extension from VS Code marketplace**
 
 
-<p>
     <img src="/img/tutorial1/installExtension.gif" title="install the extension" alt="Find the extension" />
-</p>
+
    
 
 2. In VS Code, click on the `Extensions` icon on the sidebar (left) - then, in the search bar, type `IBM Blockchain Platform` and click on `Install`. You should see a status of "Installing" and eventually "Installed" -- click `reload` if prompted.
@@ -106,9 +103,9 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
   
 **Figure 2. Open the commercial paper sample project in VS Code**
 
-</p>    
+    
     <img src="/img/tutorial1/papercontract.png" title="Open contract folder" alt="Open contract folder" />
-</p>
+
  
 2. Explore the `papercontract.js` file, which is located in the `lib` subfolder. It effectively orchestrates the logic for the different smart contract transaction functions (issue, buy, redeem, etc.), and is underpinned by essential core functions (in the sample contract) that interact with the ledger. The link provided in the introduction section above explains the concepts, themes, and programmatic approach to writing contracts using the commercial paper scenario. Take some time to read that explainer and then resume here.
 
@@ -116,9 +113,9 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
   
 **Figure 3. Choose the contract folder**
 
-<p>
+
     <img src="/img/tutorial1/project-commpaper.png" title="Return to contract folder" alt="Return to contract folder" />
-</p> 
+
 
 ### Step 5. Package the smart contract
 
@@ -126,9 +123,8 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 2. Click inside the file `package.json` in the Explorer palette and edit the “name” field; change the name to `papercontract`. Next click CONTROL + S as a VS Code shortcut to save the file.
 
-<p>
     <img src="./img/tutorial1/package-name.png" title="Package smart contract" alt="Package smart contract" />
-</p>
+
 
 3. Click on the "Smart Contracts" sub-menu to expand. Then click on the ellipsis (“...”) button and choose "Package Open Project" for installing onto a peer. The package will be called something like `papercontract@0.0.1`.
 
@@ -137,9 +133,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 
 1. In VS Code, under the menu option 'View...Command Palette' - select the 'IBM Blockchain Platform - enable or disable experimental features' checkbox and click 'OK'
 
-<p>
     <img src="./img/tutorial1/experimental-feat.png" title="Experimental feature" alt="Enable Microfab feature" />
-</p>
 
 2. Using the IBM Blockchain Platform extension sidebar, connect to the running Microfab based 'Commerce' blockchain network - the feature mentioned conveniently provides you with the ability to connect to the sample containerised Fabric, running in your local virtual machine. 
   
