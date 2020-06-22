@@ -4,10 +4,7 @@ This tutorial, the second in the [series](https://developer.ibm.com/series/block
 
 ##### Overview diagram
 
-<p>
-    <img src="/img/tutorial2/reduced-overview.png" title="Commercial Paper scenario overview" alt="scenario overview" />
-</p>
-
+<img src="/img/tutorial2/reduced-overview.png" title="Commercial Paper scenario overview" alt="scenario overview" />
 
 ## Scenario
 
