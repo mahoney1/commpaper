@@ -1,6 +1,17 @@
+## Introduction
+
+This tutorial, the second in the [series](https://developer.ibm.com/series/blockchain-running-enhancing-commercial-paper-smart-contract/) following the [first tutorial](https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/) continues the focus on local development of the commercial paper smart contract: ie. adding queries, simple and more advanced, to the Commercial Paper use case. You will add the required query function code using Node.js javascript, and upgrade the smart contract on the local 'Commerce' network. The ultimate goal (which you'll complete in the next tutorial) is to take this smart contract, developed/tested locally, to a fully running IBM Blockchain Platform Commerce 3-organization network. In that tutorial, you will use the IBM Blockchain Ansible collection](https://github.com/IBM-Blockchain/ansible-collection/blob/master/README.md), to automate provisioning of this 3-organization network in the 30-day free Kubernetes cluster in IBM Cloud. Note that this collection is fully-scripted for you; all you have to do is 'press the button'. Once provisioned, you will interact with the same smart contract in the cloud-based Commerce network, and generate HTML 5 reports of your ledger data based on the lifecycle of assets updated there. If you want to read more on IBM Blockchain Ansible collections, including a tutorial 0 check it out [here](https://ibm-blockchain.github.io/ansible-collection/)
+
+##### Overview diagram
+
+<p>
+    <img src="/img/tutorial2/reduced-overview.png" title="Commercial Paper scenario overview" alt="scenario overview" />
+</p>
+
+
 ## Scenario
 
-Isabella, an employee of MagnetoCorp, Balaji (investment trader for DigiBank) and Bart(same, but at Hedgematic), have created a 'paper' trail of transactions ; both should be able to see the history (from the ledger) of a commercial paper once it has been redeemed (e.g. some six months after issue). Luke, a developer at DigiBank, is tasked with adding query functionality to the smart contract,  and provide a client app for DigiBank so that Balaji can query the ledger from the application and be able to see it rendered in an HTML browser app.
+The 1st version of the smart contract for the Commerce network (involving MagnetoCorp, DigiBank and Hedgematic) works great, but all network members agree that query functionality needs to be added. DigiBank have taken responsibility to add this function in two stages ; first, to add standard rich queries, and asset history queries ; the second, is to add more advanced 'delta' query capability; so instead of returning back the whole history of an asset, only return the elements that have changed - smaller payload - this functionality is something that Hedgematic will add as they have written this function. Once the source contract has the functionality added, the smart contract needs to be packaged, then upgraded - it will be done for all three members. The next step is to carry out some queries on the commercial paper assets, to see the functions work as designed. Then the other members of the network have created a 'paper' trail of transactions ; both should be able to see the history (from the ledger) of a commercial paper once it has been redeemed (e.g. some six months after issue). Luke, a developer at DigiBank, is tasked with adding query functionality to the smart contract,  and provide a client app for DigiBank so that Balaji can query the ledger from the application and be able to see it rendered in an HTML browser app.
 
 OK -- let's get started!
 
