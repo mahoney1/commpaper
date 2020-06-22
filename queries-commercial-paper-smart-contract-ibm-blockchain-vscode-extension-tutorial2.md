@@ -1,6 +1,6 @@
 ## Introduction
 
-This tutorial, the second in the [series](https://developer.ibm.com/series/blockchain-running-enhancing-commercial-paper-smart-contract/) following the [first tutorial](https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/) continues the focus on local development of the commercial paper smart contract: ie. adding queries, simple and more advanced, to the Commercial Paper use case. You will add the required query function code using Node.js javascript, and upgrade the smart contract and test it out in your local environment. In tutorial 3, you will take this smart contract, developed/tested locally, to a fully running IBM Blockchain Platform Commerce 3-organization network - you will use the [IBM Blockchain Ansible collection](https://github.com/IBM-Blockchain/ansible-collection/blob/master/README.md), to automate provisioning of this 3-organization Commerce network in a 30-day free Kubernetes cluster in IBM Cloud. This collection is fully-scripted for you; all you have to do is 'press the button'. Once provisioned, you will interact with the same smart contract in the cloud-based Commerce network using the IBM Blockchain Platform VS Code extension and also use application clients (provided for you) to generate HTML 5 reports of your ledger data based on the lifecycle of assets updated there. If you want to read more on IBM Blockchain Ansible collections, including a tutorial 0 check it out [here](https://ibm-blockchain.github.io/ansible-collection/)
+This tutorial, the second in the [series](https://developer.ibm.com/series/blockchain-running-enhancing-commercial-paper-smart-contract/) follows on from the [first tutorial](https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/) with the focus on local development of the commercial paper smart contract: ie. adding queries, simple and advanced. You will add the required query function code using Node.js javascript, upgrade the smart contract and test it out in your local environment. This sets up nicely for the third tutorial, where you will take this smart contract and deploy to a fully running IBM Blockchain Platform 'Commerce' 3-organization network - you will use the [IBM Blockchain Ansible collection](https://github.com/IBM-Blockchain/ansible-collection/blob/master/README.md), to automate provisioning of this 3-organization Commerce network in a 30-day free Kubernetes cluster in IBM Cloud. This collection is fully-scripted for you; all you have to do is get your free cluster, then 'press the button'. Once provisioned, you will interact with the same smart contract in the cloud-based Commerce network using the IBM Blockchain Platform VS Code extension; you'll also use application clients (provided for you) to generate HTML 5 reports of your ledger data based on the lifecycle of assets updated there. If you want to read more on IBM Blockchain Ansible collections, including a tutorial 0 check it out [here](https://ibm-blockchain.github.io/ansible-collection/)
 
 **Overview**
 
@@ -8,7 +8,12 @@ This tutorial, the second in the [series](https://developer.ibm.com/series/block
 
 ## Scenario
 
-The 1st version of the smart contract for the Commerce network (involving MagnetoCorp, DigiBank and Hedgematic) works great, but all network members agree that query functionality needs to be added. DigiBank have taken responsibility to add this function in two stages ; first, to add standard rich queries, and asset history queries ; the second, is to add more advanced 'delta' query capability; so instead of returning back the whole history of an asset, only return the elements that have changed - smaller payload - this functionality is something that Hedgematic will add as they have written this function. Once the source contract has the functionality added, the smart contract needs to be packaged, then upgraded - it will be done for all three members. The next step is to carry out some queries on the commercial paper assets, to see the functions work as designed. Then the other members of the network have created a 'paper' trail of transactions ; both should be able to see the history (from the ledger) of a commercial paper once it has been redeemed (e.g. some six months after issue). Luke, a developer at DigiBank, is tasked with adding query functionality to the smart contract,  and provide a client app for DigiBank so that Balaji can query the ledger from the application and be able to see it rendered in an HTML browser app.
+The 1st version of the `papercontract` smart contract on the network (involving MagnetoCorp, DigiBank and Hedgematic) works great, but all agree query functionality needs to be added. DigiBank have taken responsibility to add this function in two stages ; 
+
+- first, to add standard rich queries, and full asset history query functions ; 
+- second, is to add a more advanced 'delta' query capability; instead of the whole history of an asset, only return the elements that have changed (smaller payload)
+
+Once added, the smart contract is packaged, then upgraded on the local 'Commerce' network. It can then be tested by its members, to see the functions work as designed. Between them, they create a 'paper' trail of transactions like before.
 
 OK -- let's get started!
 
@@ -18,8 +23,7 @@ OK -- let's get started!
 
 1.  In VS Code, open the `contract` folder (if it isn't already open), which contains the smart contract that you completed in the previous tutorial.
 
-  **Figure 2. Open the commercial paper sample project in VS Code**
-  ![Open the commercial paper sample project in VS Code](images/papercontract.png)
+<img src="/img/tutorial2/papercontract.png" title="Open contract folder" alt="Open contract folder" />
 
 2. Open the main contract script file `papercontract.js` under the `lib` folder, and add the following line (after the PaperNet-specific classes line -- approximately line 10 onwards):
 
@@ -27,9 +31,9 @@ OK -- let's get started!
   const QueryUtils = require('./query.js');
   ```
 
-3. While you're still in papercontract.js, find the function that begins `async issue` (around line 70) and scroll down to the line `paper.setOwner(issuer);` then, in the function, create a blank/new line directly under it (which should align with the correct indentation in your code).
+3. Still in `papercontract.js`, find the function that begins `async issue` (around line 67) and scroll down to the line `paper.setOwner(issuer);` ; create a blank/new line directly under it (which should align with the correct indentation in your code).
 
-4. Now paste in the following code block, which enables you to report the invoker CN of the transaction. The `getInvoker` function uses the `clientIdentity` object that's available via the transaction context (ctx). Remember to highlight the code pastes, right-click > "Format Selection" if the pasted code is not indented correctly.
+4. Now paste in the following code block, which enables you to report the invoker CN of the transaction. The `getInvoker` function uses the `clientIdentity` object that's available via the transaction context (ctx). Hit 'right-click' > "Format Selection" if the pasted code is not indented correctly.
 
   ```
   // Add the invoking CN, to the Paper state for reporting purposes later on
@@ -39,19 +43,20 @@ OK -- let's get started!
 
   **Note:** This code should be located *before* the line `await ctx.paperList.addPaper(paper);` in the `issue` function.
 
-5. Once again, paste the three-line block into the functions beginning with `async buy` and `async redeem`, as you did above. Paste the code block near the end of *each* of those functions and *before* the following line shown in each function:
+5. Once again, paste the three-line block (ie above), into the functions beginning with `async buy` and `async redeem`, as you did above in '`async issue`. Paste the code block near the end of *each* of those two functions and *before* the line shown below, in each function:
 
   ```
   await ctx.paperList.updatePaper(paper);
   ```
+ 
 
-6. In the `async buy` function only, at around line 120 in the code (specifically, the line with comment `// Check paper is not already REDEEMED`), *add* this single line of code *below* the line `paper.setOwner(newOwner);` but *inside* the `isTrading()` code branch:
+6. In the `async buy` function **only**, at around line 116 in the code (specifically, the line with comment `// Check paper is not already REDEEMED`), *add* this single line of code *below* the line `paper.setOwner(newOwner);` but *inside* the `isTrading()` code `if ...then` branch:
 
   ```
   paper.setPrice(price);
   ```
 
-7. Add the following code block, which contains three functions (two of which are query transaction functions you will invoke) - add directly *after* the *closing* curly bracket of the `redeem` transaction function, but *before* the last *closing* bracket in the file papercontract.js (the one immediately before the `module.exports` declaration). These two main query functions call "internal" or "worker" query functions/iterators in the file `query.js`, and the `idGen` function below gets identity information used for reporting:
+7. Add the following code block, directly *after* the *closing* curly bracket of the `redeem` transaction function, but *before* the last *closing* bracket in the file papercontract.js (the one immediately before the `module.exports` declaration). The code contains three functions (two of which are query transaction functions you will invoke). The two query functions call "internal" or "worker" query functions/iterators in the file `query.js` that you'll add shortly, and the `idGen` function below gets identity information used for reporting: 
 
   ```
       /**
@@ -102,13 +107,13 @@ OK -- let's get started!
     }
   ```
 
-  **Note:** Once you've pasted this into VS Code, the `ESLinter` extension (if it is enabled in your VS Code session) may report problems in the **Problems** pane at the bottom. If it does, you can easily rectify the formatting issues in the **Problems** pane by choosing **right-click....** then **Fix all auto-fixable issues**. Likewise, it will remove any trailing spaces reported by ESLint (if the line number is reported). Once you complete the formatting task, be sure to **save your file** via the menu. (You can use **Ctrl+S** to save your file.) In addition, the ESLint extension (also available from the VS Code extension marketplace) is also useful, and I recommend using it to fix any indentation, incorrect pasting, or general errors that can be detected before you package up the smart contract.
+  **Note:** Once you've pasted this into VS Code, the `ESLinter` extension (if enabled) may report problems in the **Problems** pane at the bottom. If it does, you can easily rectify the formatting issues in the **Problems** pane by choosing **right-click....** then **Fix all auto-fixable issues**. Likewise, it will remove any trailing spaces reported by ESLint. Once you complete the formatting task, be sure to **save your file** via the menu. (You can also use **Ctrl+S** to save your file.) FYI the ESLint extension (from the VS Code extension marketplace) is also useful, and recommend using it to fix any indentation, incorrect pasting, or general errors that can be detected before you package up the smart contract.
 
 8. Highlight the code you pasted and right-click > "Format selection" to format it correctly in your JavaScript file.
 
-9. You have two more small functions to add inside the source file, `paper.js`. Open `paper.js` under the `lib` directory in your VS Code session.
+9. You have two more small functions to add inside another source file, called `paper.js`. Open `paper.js` under the `lib` directory in your VS Code session.
 
-10. *After* the existing `setOwner(newOwner)` function (at about line 40) -- and under the description called `//basic setters and getters` -- *add* the following code block (which contains two functions):
+10. *After* the closing bracket for the existing `setOwner(newOwner)` function (at about line 45) -- and under the description called `//basic setters and getters` -- *paste in* the following code block (which contains two functions):
 
   ```
     setCreator(creator) {
@@ -126,9 +131,124 @@ OK -- let's get started!
 
 1. Create a new file via the VS Code menu under the `contract/lib` folder using VS Code and call it `query.js`.
 
-2. Copy the contents of the `query.js` file from the GitHub repo `github.com/mahoney1/commpaper`, which you cloned earlier.
+<img src="/img/tutorial2/newqueryjs-file.png" title="New query.js file" alt="new query.js file" />
+
+2. Copy the contents of the `query.js` file from the cloned GitHub repo `github.com/mahoney1/commpaper`
 
 3. Paste the contents into your `query.js` VS Code edit session. You should have all the copied contents in your new query JavaScript "worker" `query.js` file. Now go ahead and save this file. You're done with the smart contract edits.
+
+4. Next, we want to add the 'advanced' delta query code functions to `query.js` - you can copy/paste the code segment below, ensureing you paste before the last curly bracket, at the bottom of `query.js` (ie its before the `module.exports` line). 
+
+```
+// =========================================================================================
+   // getDeltas takes getHistory results for an asset and returns the deltas
+   // =========================================================================================
+
+   async getDeltas(obj)  {
+
+       let deltaArr = [];
+       let counter = 0;
+       let xtra_checked;
+
+       Object.getOwnPropertyNames(obj).forEach( function (key, idx) {
+           xtra_checked=0;
+           let stdfields = 'TxId, Timestamp, IsDelete';
+
+           for (let field of Object.keys(obj[key]) ) {
+               let val = obj[key];
+               counter = idx+1;
+               let val2 = obj[counter];
+
+               if (counter < obj.length ) {
+
+                   if ( (stdfields.indexOf(field)) > -1 ) {
+                       deltaArr.push(field, val[field]);
+                   }
+
+                   if (field === 'Value') {
+
+                       for (let element of Object.keys(val[field]) ) { // Value stanza
+                           // changes: of value, existing field
+                           if ( val2[field].hasOwnProperty(element) && (val[field][element] !==  val2[field][element] )) {
+                               deltaArr.push(element, val2[field][element]);
+                           }
+                           // deletes: field/val deleted (! item.next))
+                           if ( (!val2[field].hasOwnProperty(element)) )  {
+                               deltaArr.push(element, val[field][element]);
+                           }
+                           // adds: (new in item.next),add once only!
+                           if (!xtra_checked) {
+                               for ( let xtra of Object.keys(val2[field]) ) {
+                               //console.log("xtra is " + val2[field][xtra] + "checking field " + xtra + "bool " + val[field].hasOwnProperty(xtra) );
+                                   if ( (!val[field].hasOwnProperty(xtra)) ) {
+                                       deltaArr.push(xtra, val2[field][xtra]);
+                                   }
+                               }
+                               xtra_checked=1;
+                           } // if xtra
+                       } // for each 'element' loop
+                   } // if 'Value' in payload
+               } // if less than obj.length
+           } // for each 'field' loop
+       }  // 'foreach' loop
+       ); //closing Object.keys
+
+       return deltaArr ;
+   } // async getDeltas
+
+   // =========================================================================================
+   // jsontabulate takes getDelta results array and returns the deltas in tabulator(.info) form
+   // rendered as a nicely formatted table in HTML
+   // =========================================================================================
+
+   jsontabulate(array)  {
+       let i= 1;
+       let length = array.length;
+       let val = '[{'; // begins with - FYI below, each element is stripped of "" by key/value stepthru
+       for (let [key, value] of Object.entries(array)) {
+           console.log('key is' + key + 'value is ' + value);
+           if ( i > 1 && ( (i % 2) === 0)  ) {
+
+               if (i < length)  {
+                   val = val + '"' + value + '"' + ',';}  // (output 2-tuple)
+               else {
+                   val = val + '"' + value + '"}]'; }  // last record
+           }
+           else {
+               if (value === 'TxId') {val = val.replace(/,$/,'},{');} // delimit each record, just before TxId
+               val = val + '"' + value + '"' + ':';   // key:value
+           }
+           i++;
+       }
+       return val;
+   }
+```
+
+5. Hit CONTROL and S (**CTRL + S**) to save your file.
+
+6. Return to the main contract file `papercontract.js` in the VS Code Explorer - you will add the high-level transaction functions for the 'delta' advanced query transaction function we will use for reporting upon later.
+
+7. Scroll down to approx line 196 to just before the function called `queryOwner` in papercontract.js - and paste in the following code - once again, right-click ...'Format Document' to re-format the code. Finally, ensure you hit CONTROL + S to save the changes.
+
+```
+/**
+    * queryDeltas commercial paper
+    * @param {Context} ctx the transaction context
+    * @param {String} issuer commercial paper issuer
+    * @param {Integer} paperNumber paper number for this issuer
+    */
+    async queryDeltas(ctx, issuer, paperNumber) {
+
+    // Get a key to be used for History / Delta query
+        let cpKey = CommercialPaper.makeKey([issuer, paperNumber]);
+        let myObj = new QueryUtils(ctx, 'org.papernet.commercialpaperlist');
+        let results = await myObj.getHistory(cpKey);
+        let deltas = await myObj.getDeltas(results);
+        let jsonstr = myObj.jsontabulate(deltas);
+        return jsonstr;
+    }
+```
+ 
 
 Now let's get this added smart contract functionality out on the blockchain to replace the older smart contract edition.
 
