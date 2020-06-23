@@ -288,25 +288,11 @@ You should get a message that the contract was instantiated successfully (and yo
  
 <img src="/img/tutorial2/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
    
-Well done! You have now added rich query and advanced query functionality to the smart contract. Its now time to test the new transactions, which you can see if you connect to the 'DigiBank Gateway' and expand the list of transactions under `papercontract@0.0.2` under `mychannel` - you'll see the new query functions that you can try out shortly:
+Well done! You have now added rich query and advanced query functionality to the smart contract. Its now time to test the new transactions, which you can see if you connect to the 'DigiBank Gateway' and expand the list of transactions under `papercontract@0.0.2` under `mychannel` - you'll see the new query functions that you can try out shortly. 
 
 <img src="/img/tutorial2/confirm-functions.png" title="Confirm query functions" alt="Confirm query functions" />
 
-### Step 4. Create a new DigiBank query client app to invoke query transactions
-
-1. In VS Code, click on the menu option **File** ... **open Folder**, open the folder under `organization/digibank/application`, and press **Enter**.
-
-2. Right-click on the folder in the left pane and create a new file named `queryapp.js`. Then paste the contents of the *other* file named queryapp.js, which is located in the `commpaper` repo that you cloned previously (see steps in the "Summary" section of the [previous Commercial Paper tutorial](https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/#summary).
-
-3. Now you can fix any formatting errors if ESLint is enabled (right-click on "Fix all auto-fixable errors," and it should automatically fix any indentation issues).
-
-4. Press **Ctrl+S** to save the file, then click on the **Source Control** icon to commit the file, with a commit message. The `queryapp.js` client contains two query functions:
-  * A `queryHist` function that gets the history of a commercial paper instance
-  * A `queryOwner` function that gets the list of commercial papers owned by an organization (provided as a parameter to the query function)
-
-  Next, you'll create the transaction history, then run the new query client app to execute a set of queries. (You'll do this from a terminal window in DigiBank's application folder; it doesn't matter whether you test from MagnetoCorp or DigiBank in this example -- you should see the same data on the ledger from either application client.)
-
-### Step 5. Perform the issue, buy, and redeem transaction lifecycle to update the ledger
+### Step 4. Perform the issue, buy, and redeem transaction lifecycle to create data on the ledger
 
 Let’s create some transactions, invoked as different identities, to create a history of transactions on the ledger. The sequence is:
 
@@ -315,200 +301,110 @@ Let’s create some transactions, invoked as different identities, to create a h
 3. Buy the paper as "Hedgematic," the changed owner.
 4. Redeem the paper at face value, as existing owner "Hedgematic," with MagnetoCorp as the original issuer.
 
-![Transaction flow](images/flow-transaction-2.png)
+#### Transaction 1: Execute an `issue` transaction as MagnetoCorp
 
-#### Set up the client connection for the application client
+1. From the IBM Blockchain Platform VS Code sidebar panel, locate the **Fabric Gateways** view and click on the `MagnetoCorp` Gateway. It will automatically connect with the single identity in the wallet, ie `MagnetoCorp Admin`. Expand the `mychannel` twisty, then  expand `papercontract@0.0.1` to reveal the list of transactions in the contract.
 
-In preparation for connecting your local application JavaScript clients to the local Fabric development runtime, you need to do some simple actions to get connection information to use in those JavaScript clients. The high level steps are:
+    <img src="/img/tutorial1/magnetogw-connect.png" title="Connect as MagnetoCorp" alt="Connect as MagnetoCorp" />
 
-* Export the connection details (connection.json) from the IBM Blockchain Platform VS Code extension panel.
-
-* Have the client application scripts (cloned earlier with the Fabric samples repo) used by this tutorial point to this exported connection file for its connection information. In the next sequence, you will change the following 3 Fabric sample clients in the subdirectories shown:
-
-  * `'magnetocorp/organization/application/issue.js'`
-  * `'digibank/organization/application/buy.js'`
-  * `'digibank/organization/application/redeem.js'`
-
-1. From the IBM Blockchain Platform extension sidebar, locate the development peer under "Nodes" in the sidebar pane **Fabric Environments** on the left.
-
-2. Right-click on the peer and select "Export Connection Profile," and save the file `connection.json` to your home directory (such as "/home/ibm").
-
-3. From a terminal window, open up the file `$HOME/fabric-samples/commercial-paper/organization/magnetocorp/application/issue.js` in VS Code and edit the following sections:
-
-  * Comment out the line beginning with `const yaml =` (approx. line 19) so that it reads:
-    ```
-    //const yaml = require('js-yaml');
-    ```
-  * Comment out the following line (approx. line 41) that begins with `let connectionProfile = yaml.safeLoad` so that it reads:
-    ```
-    // let connectionProfile = yaml.safeLoad(fs.readFileSync('../gateway/networkConnection.yaml', 'utf8'));
-    ```
-
-  * Below this line, add the following 2 lines of code.
-
-    **Note:** The path provided is in single quotes below. For `readFileSync` (below), _you must provide (replace below as necessary) the full file export path to your connection.json_. Copy that path from the "output" panel and add the filename as shown below. (The filepath below may be different for you; I am using the home directory for "user1" in this example!)
-    ```
-    let fpath = fs.readFileSync('/home/ibm/connection.json', 'utf8');
-    let connectionProfile = JSON.parse(fpath);
-    ```
-
-    And that's all of the changes for the "issue" client.
-
-  * Comment out the following line (approx. 25) so that it reads:
-    ```
-    // const wallet = new FileSystemWallet('../identity/user/isabella/wallet');
-    ```
-    And add this line below it (where `/home/ibm` is the `$HOME` of your chosen home directory):
-    ```
-    const wallet = new FileSystemWallet('/home/ibm/.fabric-vscode/wallets/local_fabric_wallet/');
-    ```
-
-  * Comment out the following line (approx. 38) so that it reads :
-    ```
-    // const userName = 'User1@org1.example.com';
-    ```
-    and add this line below it:
-    ```
-    const userName = 'Isabella@MagnetoCorp';
-    ```
-
-  * On line 51, change the `discovery` parameter to `true` from its current value, `false`.
-
-4. Next, perform the same changes for the DigiBank client application (this is at the same level as the "magnetocorp" subdirectory):
-
-  Change the "buy.js" and "redeem.js" client scripts in _exactly_ the same way as completed in the instructions in bullet 3 above (for MagnetoCorp), located under the DigiBank `application` client folder. The DigiBank application also:
-
-    * reads the local_fabric connection.json file path as shown
-    * uses the wallet (`local_fabric_wallet`) and the correct user name for the identity that will perform the transaction (Balaji@DigiBank); the definitions for `wallet` (approx. line 25) and `userName` (approx. line 38)
-    * needs to change the `discovery` parameter so that it is set to `true`
-
-**Note:** You will need to install Node.js application dependencies (use `npm install` for both Transactions #1 and #2 below) for the existing MagnetoCorp and DigiBank client applications below.
-
-#### Transaction #1. Execute an `issue` transaction as Isabella@MagnetoCorp
-
-1. Open a terminal window and change the directory to MagnetoCorp's application directory (assuming `$HOME` is the holding location below):
+2. Highlight the "issue" transaction and right-click `Submit Transaction`. A pop-up window should appear at the top.
+  
+3. When prompted, copy and paste the following parameters (incl. double-quotes) **inside** the existing square brackets "[]" and hit ENTER. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`. **Make sure there are no trailing ' ' spaces** in your input to transactions:
 
   ```
-  cd $HOME/fabric-samples/commercial-paper/organization/magnetocorp/application
+"MagnetoCorp","00001","2020-05-31","2020-11-30","5000000"
   ```
+  
+4. Check the message (in the **Output** pane) indicating that this transaction was successfully submitted.
 
-2. Now execute the first commercial paper transaction from the `application` directory -- the `issue` transaction:
+<img src="/img/tutorial2/issue-success.png" title="Confirm issue success" alt="Confirm issue success" />
+  
+5. Lastly, disconnect from the `MagnetoCorp` Gateway by clicking the 'Fabric Gateways' pane title, then click on the "disconnect" icon.
 
+#### Transaction 2. Execute a `buy` transaction as DigiBank
+
+1. Click once on the `DigiBank` Gateway - it will connect with the 'DigiBank Admin' identity - the only one in the wallet.
+  
+2. Expand the `mychannel` twisty and then the `papercontract@0.0.1` twisty, in turn to see the transaction list.
+
+3. Highlight, then right-click, the "buy" transaction and right-click "Submit Transaction." A pop-up window will appear.
+
+4. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`:
+  
   ```
-  node issue.js
+"MagnetoCorp","00001","MagnetoCorp","DigiBank","4900000","2020-05-31"
   ```
+  
+5. Once again, check the message (in the output pane) indicating that this transaction was successfully submitted.
 
-  You should get messages confirming it was successful:
+6. Disconnect from the `DigiBank` Gateway from the `Fabric Gateways` view.
 
-  **Figure 5. The `issue` transaction**
-  ![The issue transaction](images/issue-output.png)
+#### Transaction 3. Execute another `buy` transaction - this time, as Hedgematic
 
-#### Transaction #2. Execute a `buy` transaction as Balaji@DigiBank
+1. Click once on the `Hedgmatic` Gateway - it will connect with the `Hedgematic Admin` identity as the only one in the wallet.
+  
+2. Expand the `mychannel` twisty and then the `papercontract@0.0.2` twisty, in turn.
 
-1. In the same terminal window, change the directory to DigiBank's application directory:
+3. Highlight, then right-click, the "buy" transaction and right-click "Submit Transaction." A pop-up window will appear.
 
-  ```
-  cd ../../digibank/application
-  ```
-
-2. Now execute the first commercial paper `buy` transaction from the `application` directory:
-
-  ```
-  node buy.js
-  ```
-
-  You should get messages confirming it was successful:
-
-  **Figure 6. The `buy` transaction**
-  ![The buy transaction](images/buy-output.png)
-
-#### Transaction #3. Execute another `buy` transaction as Bart@Hedgematic
-
-DigiBank is restructuring its investment portfolio and has decided to sell the commercial paper for a small profit to release funds earlier. The purchaser, Hedgematic, sees this as an opportunity to increase its commercial paper portfolio and recoup the face value of the paper at some point in the future. Let's execute this transaction as an employee of Hedgematic. (For convenience, you're providing a temporary wallet for the Hedgematic employee "Bart," so Hedgematic can invoke a `buy` transaction.)
-
-1. From a terminal window (still in the `digibank` application subdirectory), copy the `buy.js` client application script in the current directory to another client named `buy2.js`:
-  ```
-  cp buy.js buy2.js
-  ```
-
-2. Edit `buy2.js` and change the `userName` attribute to `Bart@Hedgematic`.
-
-  Comment out the following line (approx. 38) so that it reads :
-  ```
-  // const userName = 'Balaji@DigiBank';
-  ```
-  And add this line below it:
-  ```
-  const userName = 'Bart@Hedgematic';
-  ```
-  Comment out the following line (approx. 72) and add a line so that it reads:
-  ```
-  const buyResponse = await contract.submitTransaction('buy', 'MagnetoCorp', '00001', 'DigiBank', 'Hedgematic', '4930000', '2020-05-31');
-  ```
-  Then save the file.
-
-3. Return to the VS Code extension and from the **Fabric Environments** panel, then under **Nodes** > **CA node**, right-click and create an identity for "Bart@Hedgematic" (exactly as shown).
-
-4. Now run the second `buy` transaction (using Bart's identity in the client application, `buy2.js`), as follows:
+4. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`:
 
   ```
-  node buy2.js
+"MagnetoCorp","00001","DigiBank","Hedgematic","4930000","2020-06-15"
   ```
+5. Again, check the results for a successful transaction in the `Output` pane.
 
-  You should get messages confirming it was successful:
 
-  **Figure 7. The second `buy` transaction**
-  ![The second buy transaction](images/buy-output2.png)
+#### Transaction 4. Execute a `redeem` transaction as Hedgematic -- c. six months later
 
-#### Transaction #4: Execute a `redeem` transaction as Bart@Hedgematic -- six months later
+Months later in this commercial paper's lifecycle, the current owner (Hedgematic) wishes to **redeem** the commercial paper "0001" at face value and get a return on the investment outlay. Typically, a client application would perform this task with a valid identity. For testing purposes, we can use the IBM Blockchain VS Code extension to do this.
 
-The time has come in this commercial paper's lifecycle for the commercial paper to be redeemed by its current owner (Hedgematic) at face value, so it recoups its investment outlay. A client application named redeem.js performs this task, and it needs to use bart@hedgematic's identity from owner Hegematic to perform it. (Currently, the redeem.js sample script uses `balaji`'s identity, but because Hedgematic has since bought the paper from DigiBank, you need to modify the script to redeem it properly as Hedgematic's Bart.) For the purposes of this tutorial, you just need to run the client application script for `redeem` from the `digibank` application subdirectory.
 
-1. Once again, from a terminal window and the same directory, `$HOME/fabric-samples/commercial-paper/organization/digibank/application`, edit the file `redeem.js`.
-
-2. Change the line beginning with `const userName =` (around line 38) to read as follows (you may prefer to copy the existing line, and comment the original line, using `//` ), so the `userName` points to Bart, the Hedgematic employee:
-
+1. Still connected to the `Hedgematic` Gateway, highlight the `redeem` transaction and right-click ... "Submit Transaction." A pop-up window will appear.
+  
+2. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`, and hit ENTER, then hit ENTER again (to skip Transient Data and Peer Targeting):
+  
   ```
-  const userName = 'Bart@Hedgematic';
+"MagnetoCorp","00001","Hedgematic","2020-11-30"
   ```
+  
+3. Check the message (in the output pane) indicating that this `redeem` transaction was successfully submitted.
 
-  **Note:** If you prefer, you can issue your own identity using the currently active CA server, using the VS Code extension, and change this script as appropriate.
+4. Disconnect from the `Hedgematic` Gateway using the disconnect icon (click the Fabric Gateways title to see the icon)
 
-3. Change the line beginning with `const redeemResponse` (around line 67), and change the *fourth* parameter to "Hedgematic":
+Well done! You've completed the transaction lifecycle; now its time to do some queries!
 
-   ```
-   const redeemResponse = await contract.submitTransaction('redeem', 'MagnetoCorp', '00001', 'Hedgematic', '2020-11-30')
-   ```
+### Step 6. Execute queries using the VS Code extension
 
-   Then save your file and commit any changes.
+Let's test out the queries you added, with some ledger data:
 
-4. Now run the redeem.js script:
+1. Connect to the `MagnetoCorp` Gateway (it uses the default Admin identity),  expand the channel `mychannel` and `papercontract@0.0.2` twisties - right-click on the transaction `getInvoker` and choose `Evaluate Transaction` - there are no parameters to this function - just hit `enter` - the Output pane should show that the current invoker is 'MagnetoCorp Admin'
 
-  ```
-  node redeem.js
-  ```
+This function is also a 'worker' function (used elsewhere in the contract) to get the current invoking identity - useful for reporting purposes later on as we'll see.
 
-  You should get messages confirming it was successful:
+2. Now right-click on the `queryHist` query transaction and click `Evaluate Transaction` 
 
-  **Figure 8. The `redeem` transaction -- the last in the lifecycle**
-  ![The redeem transaction](images/redeem-output.png)
+    <img src="/img/tutorial2/choose-queryhist.png" title="Running queryHist transaction" alt="Running queryHist transaction" />
 
-### Step 6. Launch the sample DigiBank client query application
+3. Provide the following parameters inside the `[ ]` square brackets, including the quotes:
 
-1. From a terminal window (still in the `digibank` application folder), change the following lines to match your `$HOME` directory (in the `queryapp.js` script below, `$HOME` is the directory `/home/ibm`):
-  * Line 23: `const wallet = new FileSystemWallet('/home/ibm/ .....'); etc`
-  * Line 39: `let fpath = fs.readFileSync('/home/ibm/ .....'); etc`
+"MagnetoCorp", "0001"
+    
+4. Accept the defaults by simply hitting `enter` for the next 3 prompts (accept the defaults)
 
-2. Run the queryapp client using the node:
+The output panel should reveal a JSON formatted data listing, showing the history of Commercial paper asset "MagnetoCorp0001".
 
-  ```
-  node queryapp.js
-  ```
+5. Let's try another query - this time, query the list of Commercial papers owned by an organization using the `queryByOwner` transaction function. Highlight this transaction...right-click...`Evaluate Transaction` - supply one parameter inside the `[ ]` brackets, as follows:
 
-3. You should see the JSON results from both the `queryHist` and `queryOwner` functions in the terminal window. It also creates a file called results.json in the current directory (history of the asset) as a result of the `queryHist` query invocation.
+"Hedgematic"
 
-  **Figure 9. The queryapp client results**
-  ![The queryapp client results](images/queryapp-results.png)
+6. Accept the defaults by simply hitting `enter` for the next 3 prompts (accept the defaults)
+
+The output panel should reveal a JSON formatted data listing, showing the Commercial paper assets owned by Hedgematic (1 paper).
+
+OK, so our query functions appear to be working fine. Our contract is ready. Now we need to deploy this to a 'real' network, which you'll create (by means of an automated Ansible script) once you create your free cluster in IBM Cloud (You can [preview the IBM Blockchain Platform at no charge for 30 days](https://cloud.ibm.com/registration?target=%2Fcatalog%2Fservices%2Fblockchain).
+
+You will need to create, then link your IBM Blockchain Platform service instance to the IBM Cloud Kubernetes free cluster. Create the as a cluster called `mycluster` and then link the IBM Blockchain Platform service, before you start the third tutorial. We'll tell you how to get your credentials from IBM Blockchain Platform, so you can provide them to Ansible to authenticate and provision the 'Commerce' 3-org network.
 
 ### Step 7. Display the history in a nice HTML-based UI
 
