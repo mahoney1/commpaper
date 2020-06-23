@@ -257,28 +257,40 @@ Next, we will upgrade our smart contract to ensure the new functionality is avai
 
 ### Step 4. Upgrade your smart contract version using IBM Blockchain Platform VS Code Extension
 
-1. You need to add a version change to the `package.json` file in your project, in preparation for the contract upgrade. Click on the `package.json` file in Explorer and:
+1. You need to add a version change to the `package.json` file in your project, in preparation for the contract upgrade. Click on the `package.json` file in VS Code Explorer and:
   * Change the value of the "version" field to become "0.0.2."
   * Press **Ctrl+S** to save it.
 
-2. Click on the source control sidebar icon and click the `tick` icon to commit, with a message of "adding queries," and press **Enter**.
-
   Now you're ready to upgrade your smart contract using the VS Code extension.
 
-3. Package the contract: Click on the `IBM Blockchain Platform` sidebar icon and under "Smart Contracts," choose the "Package Open Project" icon; you should see that version 0.0.2 becomes the latest edition of the available "papercontract" packages.
+2. Package the contract: Click on the `IBM Blockchain Platform` sidebar icon and under "Smart Contracts"  view, click the '...' ellipsis button and choose the "Package Open Project" icon; you should see that version 0.0.2 becomes the latest edition of the available "papercontract" packages.
 
-4. Under the **Fabric Environments** panel in the IBM Blockchain Platform sidebar, expand the existing instantiated contract "papercontract" and highlight it.
+3. Under the **Fabric Environments** panel in the IBM Blockchain Platform sidebar, navigate to 'Smart Contracts' and under `Instantiated` .. right click on `papercontract@0.0.1` and choose to `Upgrade Smart Contract
+
+
+<img src="/img/tutorial2/upgrade-contract.png" title="Upgrade smart contract" alt="Upgrade smart contract" />
+
+4. When prompted, select to install on all peers by choosing the 'select all' button and click 'OK' - the upgrade should report as being successful, after the new version (0.0.2) has been installed on all 3 peers.
+
+<img src="/img/tutorial2/install-contractonpeers.png" title="Install smart contract" alt="Install smart contract" />
 
 5. Right-click on **papercontract@0.0.1** -- **Upgrade Smart Contract**, and choose **papercontract@0.0.2** from the list presented (up top) -- then select the peer offered at the top.
 
-  * Enter or paste the text `instantiate` when prompted to enter "a function name to call," then press **Enter**.
-  * When prompted to enter any further arguments, just press **Enter** to skip.
-  
-  **Figure 3. Upgrade the smart contract using VS Code extension**
-  
-  ![Upgrade the smart contract using IBP VS Code extension](images/fig3.png)
+6. Choose the contract `papercontract@0.0.2` as the contract to use.
 
-  You should get a message in the console that the upgrade is taking place. It will take a minute or so (as it has to build the new smart contract container), and when it has completed you should see a "successful" pop-up message. If you check it using `docker ps` from a terminal, you should see a new Docker container with the contract version as a suffix under the "Names" column.
+7. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
+
+8. Press `enter` to accept the default for 'no parameters'
+
+9. Press `enter` to accept the default 'No' to add a private data collection and again, press `enter` to accept the 'Default' single endorser, when prompted
+
+You should get a message that the contract was instantiated successfully (and you will see the running contract v0.0.2 under 'Instantiated' on the sidebar on the left).
+ 
+<img src="/img/tutorial2/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
+   
+Well done! You have now added rich query and advanced query functionality to the smart contract. Its now time to test the new transactions, which you can see if you connect to the 'DigiBank Gateway' and expand the list of transactions under `papercontract@0.0.2` under `mychannel` - you'll see the new query functions that you can try out shortly:
+
+<img src="/img/tutorial2/confirm-functions.png" title="Confirm query functions" alt="Confirm query functions" />
 
 ### Step 4. Create a new DigiBank query client app to invoke query transactions
 
