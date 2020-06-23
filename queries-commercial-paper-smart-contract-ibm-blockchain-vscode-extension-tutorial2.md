@@ -25,13 +25,13 @@ OK -- let's get started!
 
 <img src="/img/tutorial2/papercontract.png" title="Open contract folder" alt="Open contract folder" />
 
-2. Open the main contract script file `papercontract.js` under the `lib` folder, and add the following line (after the PaperNet-specific classes line -- approximately line 10 onwards):
+2. Open the main contract script file `papercontract.js` under the `lib` folder, and add the following line (after the initial `Contract, Context` class declarations line) at line 11 onwards:
 
   ```
   const QueryUtils = require('./query.js');
   ```
 
-3. Still in `papercontract.js`, find the function that begins `async issue` (around line 67) and scroll down to the line `paper.setOwner(issuer);` ; create a blank/new line directly under it (which should align with the correct indentation in your code).
+3. Still in `papercontract.js`, find the function that begins `async issue` (around line 67) and scroll down to the line `paper.setOwner(issuer);` (approx line 76) ; create a blank/new line directly under it (which should align with the correct indentation in your code).
 
 4. Now paste in the following code block, which enables you to report the invoker CN of the transaction. The `getInvoker` function uses the `clientIdentity` object that's available via the transaction context (ctx). Hit 'right-click' > "Format Selection" if the pasted code is not indented correctly.
 
@@ -41,22 +41,22 @@ OK -- let's get started!
   paper.setCreator(invokingId);
   ```
 
-  **Note:** This code should be located *before* the line `await ctx.paperList.addPaper(paper);` in the `issue` function.
+  **Note:** This code should be located *before* the line `await ctx.paperList.addPaper(paper);` in this `issue` function.
 
-5. Once again, paste the three-line block (ie above), into the functions beginning with `async buy` and `async redeem`, as you did above in '`async issue`. Paste the code block near the end of *each* of those two functions and *before* the line shown below, in each function:
+5. Next, paste that same three-line block (ie above), into the next two transaction functions beginning with `async buy` and `async redeem`, just as you did above in '`async issue`. Paste the code block (in each function) near the end and ensure the paste is *before* the line shown below:
 
   ```
   await ctx.paperList.updatePaper(paper);
   ```
  
 
-6. In the `async buy` function **only**, at around line 116 in the code (specifically, the line with comment `// Check paper is not already REDEEMED`), *add* this single line of code *below* the line `paper.setOwner(newOwner);` but *inside* the `isTrading()` code `if ...then` branch:
+6. Now, in the `async buy` function **only**, at around line 116 in the code (line with comment `// Check paper is not already REDEEMED`), **add** this single line of code *below* the line entitled  `paper.setOwner(newOwner);` make sure the paste is *inside* the `isTrading()` conditional  `if ...then` branch:
 
   ```
   paper.setPrice(price);
   ```
 
-7. Add the following code block, directly *after* the *closing* curly bracket of the `redeem` transaction function, but *before* the last *closing* bracket in the file papercontract.js (the one immediately before the `module.exports` declaration). The code contains three functions (two of which are query transaction functions you will invoke). The two query functions call "internal" or "worker" query functions/iterators in the file `query.js` that you'll add shortly, and the `idGen` function below gets identity information used for reporting: 
+7. Still in `papercontract.js`, add in the following code block, directly *after* the *closing* curly bracket of the main `async redeem` transaction function, and ensure it is *before* the last *closing* bracket in the file `papercontract.js` (ie the one immediately before the `module.exports` declaration). The code you copied contains three functions (two of which are query transaction functions you will invoke). These two query functions call "internal" or "worker" query functions/iterators in the file `query.js` that you'll add shortly, and the `idGen` function below gets identity information used for reporting later on: 
 
   ```
       /**
@@ -109,11 +109,11 @@ OK -- let's get started!
 
   **Note:** Once you've pasted this into VS Code, the `ESLinter` extension (if enabled) may report problems in the **Problems** pane at the bottom. If it does, you can easily rectify the formatting issues in the **Problems** pane by choosing **right-click....** then **Fix all auto-fixable issues**. Likewise, it will remove any trailing spaces reported by ESLint. Once you complete the formatting task, be sure to **save your file** via the menu. (You can also use **Ctrl+S** to save your file.) FYI the ESLint extension (from the VS Code extension marketplace) is also useful, and recommend using it to fix any indentation, incorrect pasting, or general errors that can be detected before you package up the smart contract.
 
-8. Highlight the code you pasted and right-click > "Format selection" to format it correctly in your JavaScript file.
+8. Right-click in your document and click "Format selection" to format it correctly in your JavaScript file. Ensure you've saved the file before proceeding.
 
-9. You have two more small functions to add inside another source file, called `paper.js`. Open `paper.js` under the `lib` directory in your VS Code session.
+9. You have two more small functions to add inside another source file - its called `paper.js`. Open `paper.js` under the `lib` directory in your VS Code session.
 
-10. *After* the closing bracket for the existing `setOwner(newOwner)` function (at about line 45) -- and under the description called `//basic setters and getters` -- *paste in* the following code block (which contains two functions):
+10. *After* the closing bracket for the existing `setOwner(newOwner)` function (at about line 45) --  under the description called `//basic setters and getters` -- *paste in* the following code block (which contains two setter functions):
 
   ```
     setCreator(creator) {
@@ -135,9 +135,11 @@ OK -- let's get started!
 
 2. Copy the contents of the `query.js` file from the cloned GitHub repo `github.com/mahoney1/commpaper`
 
-3. Paste the contents into your `query.js` VS Code edit session. You should have all the copied contents in your new query JavaScript "worker" `query.js` file. Now go ahead and save this file. You're done with the smart contract edits.
+3. Paste the contents into your `query.js` VS Code edit session. You should now have a series of functions in your new query JavaScript "worker" `query.js` file. Now go ahead and save this file using **CTRL + S**. 
 
-4. Next, we want to add the 'advanced' delta query code functions to `query.js` - you can copy/paste the code segment below, ensureing you paste before the last curly bracket, at the bottom of `query.js` (ie its before the `module.exports` line). 
+### Step 3. Add requisite advanced query 'delta' functionality to your VS Code project
+
+1. With the `query.js` file still open, add the 'advanced' delta query code functions to it - you can copy/paste the code segment below, ensuring you paste before the last curly bracket, at the bottom of `query.js` (ie its before the `module.exports` line). 
 
 ```
 // =========================================================================================
@@ -224,11 +226,11 @@ OK -- let's get started!
    }
 ```
 
-5. Hit CONTROL and S (**CTRL + S**) to save your file.
+2. Hit CONTROL and S (**CTRL + S**) to save your file.
 
-6. Return to the main contract file `papercontract.js` in the VS Code Explorer - you will add the high-level transaction functions for the 'delta' advanced query transaction function we will use for reporting upon later.
+3. Return to the main contract file `papercontract.js` in the VS Code Explorer - you will add the high-level transaction functions for the 'delta' advanced query transaction function we will use for reporting upon later.
 
-7. Scroll down to approx line 196 to just before the function called `queryOwner` in papercontract.js - and paste in the following code - once again, right-click ...'Format Document' to re-format the code. Finally, ensure you hit CONTROL + S to save the changes.
+4. Scroll down to approx line 196 to just before the function called `queryOwner` in `papercontract.js` - and paste in the following code - once again, right-click ...'Format Document' to re-format the code. 
 
 ```
 /**
@@ -249,10 +251,11 @@ OK -- let's get started!
     }
 ```
  
+5. Finally, ensure you hit CONTROL + S to save the changes. You're now done with smart contract edits.
 
-Now let's get this added smart contract functionality out on the blockchain to replace the older smart contract edition.
+Next, we will upgrade our smart contract to ensure the new functionality is available, replacing the older smart contract edition.
 
-### Step 3. Upgrade your smart contract version using IBM Blockchain Platform VS Code Extension
+### Step 4. Upgrade your smart contract version using IBM Blockchain Platform VS Code Extension
 
 1. You need to add a version change to the `package.json` file in your project, in preparation for the contract upgrade. Click on the `package.json` file in Explorer and:
   * Change the value of the "version" field to become "0.0.2."
@@ -291,7 +294,7 @@ Now let's get this added smart contract functionality out on the blockchain to r
 
   Next, you'll create the transaction history, then run the new query client app to execute a set of queries. (You'll do this from a terminal window in DigiBank's application folder; it doesn't matter whether you test from MagnetoCorp or DigiBank in this example -- you should see the same data on the ledger from either application client.)
 
-### Step 5. Perform the issue, buy, and redeem transactions to update the ledger
+### Step 5. Perform the issue, buy, and redeem transaction lifecycle to update the ledger
 
 Let’s create some transactions, invoked as different identities, to create a history of transactions on the ledger. The sequence is:
 
@@ -300,7 +303,6 @@ Let’s create some transactions, invoked as different identities, to create a h
 3. Buy the paper as "Hedgematic," the changed owner.
 4. Redeem the paper at face value, as existing owner "Hedgematic," with MagnetoCorp as the original issuer.
 
-**Figure 4. "Papernet" -- overview of transaction flow**
 ![Transaction flow](images/flow-transaction-2.png)
 
 #### Set up the client connection for the application client
