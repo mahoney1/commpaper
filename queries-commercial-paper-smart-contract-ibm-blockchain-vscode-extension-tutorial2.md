@@ -107,7 +107,7 @@ OK -- let's get started!
     }
   ```
 
-  **Note:** Once you've pasted this into VS Code, the `ESLinter` extension (if enabled) may report problems in the **Problems** pane at the bottom. If it does, you can easily rectify the formatting issues in the **Problems** pane by choosing **right-click....** then **Fix all auto-fixable issues**. Likewise, it will remove any trailing spaces reported by ESLint. Once you complete the formatting task, be sure to **save your file** via the menu. (You can also use **Ctrl+S** to save your file.) FYI the ESLint extension (from the VS Code extension marketplace) is also useful, and recommend using it to fix any indentation, incorrect pasting, or general errors that can be detected before you package up the smart contract.
+  **Note:** Once you've pasted this into VS Code, the `ESLinter` extension (if installeds/enabled) may report problems in the **Problems** pane at the bottom. If it does, you can easily rectify the formatting issues in the **Problems** pane by choosing **right-click....** then **Fix all auto-fixable issues**. Likewise, it will remove any trailing spaces reported by ESLint. Once you complete the formatting task, be sure to **save your file** via the menu. (You can also use **Ctrl+S** to save your file.) FYI the ESLint extension (from the VS Code extension marketplace) is also useful, and recommend using it to fix any indentation, incorrect pasting, or general errors that can be detected before you package up the smart contract.
 
 8. Right-click in your document and click "Format selection" to format it correctly in your JavaScript file. Ensure you've saved the file before proceeding.
 
@@ -374,15 +374,19 @@ Months later in this commercial paper's lifecycle, the current owner (Hedgematic
 
 Well done! You've completed the transaction lifecycle; now its time to do some queries!
 
-### Step 6. Execute queries using the VS Code extension
+### Step 6. Test a simple query in the upgraded contract using the VS Code extension
 
-Let's test out the queries you added, with some ledger data:
+Let's test out a simply query you added, with some ledger data:
 
 1. Connect to the `MagnetoCorp` Gateway (it uses the default Admin identity),  expand the channel `mychannel` and `papercontract@0.0.2` twisties - right-click on the transaction `getInvoker` and choose `Evaluate Transaction` - there are no parameters to this function - just hit `enter` - the Output pane should show that the current invoker is 'MagnetoCorp Admin'
 
 This function is also a 'worker' function (used elsewhere in the contract) to get the current invoking identity - useful for reporting purposes later on as we'll see.
 
-2. Now right-click on the `queryHist` query transaction and click `Evaluate Transaction` 
+2. The other functions perform rich queries - MicroFab uses LevelDB right now - but you can easily start up a `1 Org Local Fabric` environment under `Fabric Environments` which uses CouchDB. Go ahead and do this now. 
+
+3. As shown previously, install / instantiate the `papercontract@0.0.4` contract package by connecting to the `1 Org` environment and quickly running the Transactions #1 -> #4 above before proceeding.
+
+4. Next, having instantiated the contract on the `1 Org Fabric` environment - expand the channel `mychannel` and contract `papercontract@0.0.4` -- then right-click on the `queryHist` query transaction and click `Evaluate Transaction` 
 
     <img src="/img/tutorial2/choose-queryhist.png" title="Running queryHist transaction" alt="Running queryHist transaction" />
 
