@@ -1,6 +1,6 @@
 ## Introduction
 
-This tutorial, the second in the [series](https://developer.ibm.com/series/blockchain-running-enhancing-commercial-paper-smart-contract/) follows on from the [first tutorial](https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/) with the focus on local development of the commercial paper smart contract: ie. adding queries, simple and advanced. You will add the required query function code using Node.js javascript, upgrade the smart contract and test it out in your local environment. This sets up nicely for the third tutorial, where you will take this smart contract and deploy to a fully running IBM Blockchain Platform 'Commerce' 3-organization network - you will use the [IBM Blockchain Ansible collection](https://github.com/IBM-Blockchain/ansible-collection/blob/master/README.md), to automate provisioning of this 3-organization Commerce network in a 30-day free Kubernetes cluster in IBM Cloud. This collection is fully-scripted for you; all you have to do is get your free cluster, then 'press the button'. Once provisioned, you will interact with the same smart contract in the cloud-based Commerce network using the IBM Blockchain Platform VS Code extension; you'll also use application clients (provided for you) to generate HTML 5 reports of your ledger data based on the lifecycle of assets updated there. If you want to read more on IBM Blockchain Ansible collections, including a tutorial 0 check it out [here](https://ibm-blockchain.github.io/ansible-collection/)
+This tutorial, the second in the [series](https://developer.ibm.com/series/blockchain-running-enhancing-commercial-paper-smart-contract/) follows on from the [first tutorial](https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/) with the focus on further development of the commercial paper smart contract use case: ie. adding queries, both simple and advanced. You will add the code as part of the tutorial, then upgrade the smart contract and test it out in your local 'Commerce' network started in tutorial 1. Once you're happy, you can proceed to the third tutorial, where you will take this smart contract and deploy to a fully running IBM Blockchain Platform 'Commerce' 3-organization network. You will use the [IBM Blockchain Ansible collection](https://github.com/IBM-Blockchain/ansible-collection/blob/master/README.md), to automate provisioning of this 3-organization Commerce network in a 30-day free Kubernetes cluster in IBM Cloud. This collection is fully-scripted for you; all you have to do is get your free cluster, then 'press the button'. Once provisioned, you interact with the contract using 1) the IBM Blockchain Platform VS Code extension and 2) application clients (provided for you). The last part of the tutorial will see you using a HTML 5 client app to render asset history reports showing the full lifecycle of an asset. If you want to read more on IBM Blockchain Ansible collections, including a tutorial - check it out [here](https://ibm-blockchain.github.io/ansible-collection/)
 
 **Overview**
 
@@ -8,12 +8,12 @@ This tutorial, the second in the [series](https://developer.ibm.com/series/block
 
 ## Scenario
 
-The 1st version of the `papercontract` smart contract on the network (involving MagnetoCorp, DigiBank and Hedgematic) works great, but all agree query functionality needs to be added. DigiBank have taken responsibility to add this function in two stages ; 
+The 1st version of the `papercontract` smart contract on the network (featuring MagnetoCorp, DigiBank and Hedgematic) works great, but all parties agree query functionality needs to be added. DigiBank have taken responsibility to add this function in two stages; 
 
-- first, to add standard rich queries, and full asset history query functions ; 
-- second, is to add a more advanced 'delta' query capability; instead of the whole history of an asset, only return the elements that have changed (smaller payload)
+- first, to add standard queries, like invoking identity or asset owner; 
+- second, is to add rich and more advanced queries like asset history, assets by asset namespace (partial key), ad-hoc queries and  'delta payload' query capability; in the latter, instead of the whole history of an asset being return - only return the elements that have changed (ie smaller payload)
 
-Once added, the smart contract is packaged, then upgraded on the local 'Commerce' network. It can then be tested by its members, to see the functions work as designed. Between them, they create a 'paper' trail of transactions like before.
+Once the functions are added, the smart contract is packaged, then upgraded on the local 'Commerce' network. It is then tested by 2 members, to see the functions work as designed. Between them, they create a simple 'paper' trail of transactions like before.
 
 OK -- let's get started!
 
