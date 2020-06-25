@@ -25,7 +25,7 @@ OK -- let's get started!
 
 <img src="/img/tutorial2/papercontract.png" title="Open contract folder" alt="Open contract folder" />
 
-2. Open the main contract script file `papercontract.js` under the `lib` folder, and add the following line (after the initial `Contract, Context` class declarations line) at line 11 onwards:
+2. Open the main contract script file `papercontract.js` under the `lib` folder, and add the following line (after the initial `PaperList` class declarations line) at line 13 onwards:
 
   ```
   const QueryUtils = require('./query.js');
@@ -33,7 +33,7 @@ OK -- let's get started!
 
 3. Still in `papercontract.js`, find the function that begins `async issue` (around line 67) and scroll down to the line `paper.setOwner(issuer);` (approx line 76) ; create a blank/new line directly under it (which should align with the correct indentation in your code).
 
-4. Now paste in the following code block, which enables you to report the invoker CN of the transaction. The `getInvoker` function uses the `clientIdentity` object that's available via the transaction context (ctx). Hit 'right-click' > "Format Selection" if the pasted code is not indented correctly.
+4. Now paste in the following code block, which enables you to report the invoker CN of the transaction. The `getInvoker` function shown, uses the `clientIdentity` object that's available via the transaction context (`ctx`). Hit 'right-click' > "Format Document" to indent correctly.
 
   ```
   // Add the invoking CN, to the Paper state for reporting purposes later on
@@ -43,27 +43,29 @@ OK -- let's get started!
 
   **Note:** This code should be located *before* the line `await ctx.paperList.addPaper(paper);` in this `issue` function.
 
-5. Next, paste that same three-line block (ie above), into the next two transaction functions beginning with `async buy` and `async redeem`, just as you did above in '`async issue`. Paste the code block (in each function) near the end and ensure the paste is *before* the line shown below:
+5. Next, paste in the same three-line block (ie above), into the next two transaction functions beginning with `async buy` and `async redeem`, just as you did above in '`async issue`. Start by scrolling to line 119 approx, and paste the code block (in each function) near the end and ensure the paste is *before* the line with `await ctx.paperList.updatePaper(paper);` 
 
   ```
-  await ctx.paperList.updatePaper(paper);
+  // Add the invoking CN, to the Paper state for reporting purposes later on
+  let invokingId = await this.getInvoker(ctx);
+  paper.setCreator(invokingId);
   ```
  
+ Do the same for the `redeem` function.
 
-6. Now, in the `async buy` function **only**, at around line 116 in the code (line with comment `// Check paper is not already REDEEMED`), **add** this single line of code *below* the line entitled  `paper.setOwner(newOwner);` make sure the paste is *inside* the `isTrading()` conditional  `if ...then` branch:
+6. Now, in the `async buy` function **only**, back at around line 114 in the code (line with comment `// Check paper is not already REDEEMED`), **add** this single line of code *below* the line entitled  `paper.setOwner(newOwner);` make sure the paste is *inside* the `isTrading()` conditional  `if ...then` branch:
 
   ```
   paper.setPrice(price);
   ```
 
-7. Still in `papercontract.js`, add in the following code block, directly *after* the *closing* curly bracket of the main `async redeem` transaction function, and ensure it is *before* the last *closing* bracket in the file `papercontract.js` (ie the one immediately before the `module.exports` declaration). The code you copied contains three functions (two of which are query transaction functions you will invoke). These two query functions call "internal" or "worker" query functions/iterators in the file `query.js` that you'll add shortly, and the `idGen` function below gets identity information used for reporting later on: 
+7. Still in `papercontract.js`, add in the following code block, directly *after* the *closing* curly bracket of the main `async redeem` transaction function, (approx line 160) and ensure it is *before* the last *closing* bracket in the file `papercontract.js` (ie bracket before the `module.exports` declaration). The code you copy below, contains a number of query functions. These rely on "worker" query functions/iterators in a file `query.js` that you'll add to your project shortly: 
 
   ```
       /**
      * grab the invoking CN from the X509 transactor cert
      * @param {Context} ctx the transaction context
      */
-
     async getInvoker(ctx) {
 
         // Use the Client Identity object to get the invoker info.
@@ -82,10 +84,9 @@ OK -- let's get started!
     async queryHist(ctx, issuer, paperNumber) {
 
         // Get a key to be used for History query
-        let cpKey = CommercialPaper.makeKey([issuer, paperNumber]);
+
         let myObj = new QueryUtils(ctx, 'org.papernet.commercialpaperlist');
-        let results = await myObj.getHistory(cpKey);
-        //console.log('main: queryHist was called and returned ' + JSON.stringify(results) );
+        let results = await myObj.getHistory(issuer, paperNumber); // (cpKey);
         return results;
 
     }
@@ -93,23 +94,47 @@ OK -- let's get started!
     /**
     * queryOwner commercial paper
     * @param {Context} ctx the transaction context
-    * @param {String} issuer commercial paper issuer
-    * @param {Integer} paperNumber paper number for this issuer
+    * @param {String} owner commercial paper owner
     */
-    async queryOwner(ctx, owner, paperNumber) {
+    async queryOwner(ctx, owner) {
 
-        // Get a key to be used for the paper, and get this from world state
-        // let cpKey = CommercialPaper.makeKey([issuer, paperNumber]);
         let myObj = new QueryUtils(ctx, 'org.papernet.commercialpaperlist');
         let owner_results = await myObj.queryKeyByOwner(owner);
 
         return owner_results;
     }
+
+    /**
+    * queryPartial commercial paper
+    * @param {Context} ctx the transaction context
+    * @param {String} asset class prefix to add to namespace for partial search
+    */
+    async querybyPartial(ctx, prefix) {
+
+        let myObj = new QueryUtils(ctx, 'org.papernet.commercialpaperlist');
+        let partial_results = await myObj.queryKeyByPartial(prefix);
+
+        return partial_results;
+    }
+
+   /**
+   * queryAdHoc commercial paper
+   * @param {Context} ctx the transaction context
+   * @param {String} queryString querystring
+   */
+   async queryAdhoc(ctx, queryString) {
+
+        let myObj = new QueryUtils(ctx, 'org.papernet.commercialpaperlist');
+        let adhoc_results = await myObj.queryByAdhoc(queryString);
+
+        return adhoc_results;
+    
+   }
   ```
 
-  **Note:** Once you've pasted this into VS Code, the `ESLinter` extension (if installeds/enabled) may report problems in the **Problems** pane at the bottom. If it does, you can easily rectify the formatting issues in the **Problems** pane by choosing **right-click....** then **Fix all auto-fixable issues**. Likewise, it will remove any trailing spaces reported by ESLint. Once you complete the formatting task, be sure to **save your file** via the menu. (You can also use **Ctrl+S** to save your file.) FYI the ESLint extension (from the VS Code extension marketplace) is also useful, and recommend using it to fix any indentation, incorrect pasting, or general errors that can be detected before you package up the smart contract.
+  **Note:** If you have `ESLinter` enabled, it may report problems in the **Problems** pane at the bottom. If so, use  **right-click....** then **Fix all auto-fixable issues**. Once you complete the formatting task, be sure to **save your file** via the menu. The ESLint extension is also useful for fixing any indentation, incorrect pasting, or general errors that can be detected before you package up the smart contract.
 
-8. Right-click in your document and click "Format selection" to format it correctly in your JavaScript file. Ensure you've saved the file before proceeding.
+8. Right-click in your document and click "Format selection" to format it correctly and save `papercontract.js`.
 
 9. You have two more small functions to add inside another source file - its called `paper.js`. Open `paper.js` under the `lib` directory in your VS Code session.
 
@@ -125,21 +150,21 @@ OK -- let's get started!
 
   ```
 
-  Then press **Ctrl+S** to save the file.
+ Hit **Ctrl+S** to save the `paper.js` file.
 
 ### Step 2. Add requisite "worker" query class functions to your VS Code project (new file: query.js)
 
-1. Create a new file via the VS Code menu under the `contract/lib` folder using VS Code and call it `query.js`.
+1. Create a new file in VS Code Explorer under the `contract/lib` folder using VS Code and name it `query.js`.
 
 <img src="/img/tutorial2/newqueryjs-file.png" title="New query.js file" alt="new query.js file" />
 
-2. Copy the contents of the `query.js` file from the cloned GitHub repo `github.com/mahoney1/commpaper`
+2. In the cloned Github repo `github.com/mahoney1/commpaper` copy the contents of the `query.js` in an editor.
 
-3. Paste the contents into your `query.js` VS Code edit session. You should now have a series of functions in your new query JavaScript "worker" `query.js` file. Now go ahead and save this file using **CTRL + S**. 
+3. Paste the copied contents into your new `query.js` in VS Code. You should now have a series of standard query functions in `query.js` file. Now go ahead and save this `query.js` file using **CTRL + S**. 
 
 ### Step 3. Add requisite advanced query 'delta' functionality to your VS Code project
 
-1. With the `query.js` file still open, add the 'advanced' delta query code functions to it - you can copy/paste the code segment below, ensuring you paste before the last curly bracket, at the bottom of `query.js` (ie its before the `module.exports` line). 
+1. With the `query.js` file still open, add the 'advanced' query code functions to it - copy/paste the code segment below before the **last curly bracket**, before the bottom of `query.js` (ie the bracket before the `module.exports` line). 
 
 ```
 // =========================================================================================
@@ -228,36 +253,48 @@ OK -- let's get started!
 
 2. Hit CONTROL and S (**CTRL + S**) to save your file.
 
-3. Return to the main contract file `papercontract.js` in the VS Code Explorer - you will add the high-level transaction functions for the 'delta' advanced query transaction function we will use for reporting upon later.
+3. Return to the main contract file `papercontract.js` in the VS Code Explorer - you will add the high-level transaction function for the advanced 'delta' query transaction function, used for reporting upon later.
 
-4. Scroll down to approx line 196 to just before the function called `queryOwner` in `papercontract.js` - and paste in the following code - once again, right-click ...'Format Document' to re-format the code. 
+4. Scroll down to the end of `papercontract.js` and at approx line 230 (ie before the final bracket just before `module.exports` line) - paste in the following code - once again, right-click ...'Format Document' to re-format the code. 
 
 ```
-/**
-    * queryDeltas commercial paper
-    * @param {Context} ctx the transaction context
-    * @param {String} issuer commercial paper issuer
-    * @param {Integer} paperNumber paper number for this issuer
-    */
-    async queryDeltas(ctx, issuer, paperNumber) {
+  /**
+   * queryDeltas commercial paper
+   * @param {Context} ctx the transaction context
+   * @param {String} issuer commercial paper issuer
+   * @param {Integer} paperNumber paper number for this issuer
+   */
+   async queryDeltas(ctx, issuer, paperNumber) {
 
-    // Get a key to be used for History / Delta query
-        let cpKey = CommercialPaper.makeKey([issuer, paperNumber]);
         let myObj = new QueryUtils(ctx, 'org.papernet.commercialpaperlist');
-        let results = await myObj.getHistory(cpKey);
-        let deltas = await myObj.getDeltas(results);
-        let jsonstr = myObj.jsontabulate(deltas);
-        return jsonstr;
+        let resp = await myObj.getHistory(issuer, paperNumber);
+        let deltas = await myObj.getDeltas(resp);
+        let results = myObj.jsontabulate(deltas);
+
+        return results;
     }
 ```
  
-5. Finally, ensure you hit CONTROL + S to save the changes. You're now done with smart contract edits.
+5. Ensure you hit CONTROL + S to save the changes to `papercontract.js`. 
+
+6. One last item to change (for ledger reporting purposes), is to change one line in the file called `state.js` under the `ledger-api` folder. Open up the file `state.js` and scroll to line 89 approx - comment this line using `//` so it now looks line this:
+
+```
+// return keyParts.map(part => JSON.stringify(part)).join(':');
+```
+7.  Create a blank line below it by hitting ENTER, and paste in the following line in `state.js` so it reads:
+
+```
+return keyParts.map(part => part).join(':');
+```
+
+Hit CONTROL and 'S' to save your `state.js` file changes. You're now done with smart contract edits.
 
 Next, we will upgrade our smart contract to ensure the new functionality is available, replacing the older smart contract edition.
 
 ### Step 4. Upgrade your smart contract version using IBM Blockchain Platform VS Code Extension
 
-1. You need to add a version change to the `package.json` file in your project, in preparation for the contract upgrade. Click on the `package.json` file in VS Code Explorer and:
+1. You need to make a version change in the `package.json` file in your project, in preparation for the contract upgrade. Click on the `package.json` file in VS Code Explorer and:
   * Change the value of the "version" field to become "0.0.2."
   * Press **Ctrl+S** to save it.
 
@@ -265,7 +302,10 @@ Next, we will upgrade our smart contract to ensure the new functionality is avai
 
 2. Package the contract: Click on the `IBM Blockchain Platform` sidebar icon and under "Smart Contracts"  view, click the '...' ellipsis button and choose the "Package Open Project" icon; you should see that version 0.0.2 becomes the latest edition of the available "papercontract" packages.
 
-3. Under the **Fabric Environments** panel in the IBM Blockchain Platform sidebar, navigate to 'Smart Contracts' and under `Instantiated` .. right click on `papercontract@0.0.1` and choose to `Upgrade Smart Contract
+3. Under the **Fabric Environments** panel in the IBM Blockchain Platform sidebar, connect to the `Commerce` environment
+
+
+4. Navigate to 'Smart Contracts' and under `Instantiated` .. right click on `papercontract@0.0.1` and choose to `Upgrade Smart Contract`
 
 
 <img src="/img/tutorial2/upgrade-contract.png" title="Upgrade smart contract" alt="Upgrade smart contract" />
@@ -274,7 +314,7 @@ Next, we will upgrade our smart contract to ensure the new functionality is avai
 
 <img src="/img/tutorial2/install-contractonpeers.png" title="Install smart contract" alt="Install smart contract" />
 
-5. Right-click on **papercontract@0.0.1** -- **Upgrade Smart Contract**, and choose **papercontract@0.0.2** from the list presented (up top) -- then select the peer offered at the top.
+5. Right-click on `papercontract@0.0.1` -- **Upgrade Smart Contract**, and choose `papercontract@0.0.2` from the list presented (in the popup) - select to install on all peers.
 
 6. Choose the contract `papercontract@0.0.2` as the contract to use.
 
@@ -284,28 +324,32 @@ Next, we will upgrade our smart contract to ensure the new functionality is avai
 
 9. Press `enter` to accept the default 'No' to add a private data collection and again, press `enter` to accept the 'Default' single endorser, when prompted
 
-You should get a message that the contract was instantiated successfully (and you will see the running contract v0.0.2 under 'Instantiated' on the sidebar on the left).
+You should get a message that the new contract was installed on peers and that it was instantiated successfully (and you will see the running contract v0.0.2 under 'Instantiated' on the sidebar on the left).
  
 <img src="/img/tutorial2/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
    
-Well done! You have now added rich query and advanced query functionality to the smart contract. Its now time to test the new transactions, which you can see if you connect to the 'DigiBank Gateway' and expand the list of transactions under `papercontract@0.0.2` under `mychannel` - you'll see the new query functions that you can try out shortly. 
+Well done! You have now added rich query and advanced query functionality to the smart contract. Its now time to test the new transactions.
+
+10. Connect to the `Org2 Gateway` (if not already connected) and expand the channel `mychannel` and contract `papercontract@0.0.2`.  Expand the contract to see the transactions - you'll see the new query functions that you can try out shortly. 
 
 <img src="/img/tutorial2/confirm-functions.png" title="Confirm query functions" alt="Confirm query functions" />
 
+11. Diconnect from `Org1 Gateway` at this point.
+
 ### Step 4. Perform the issue, buy, and redeem transaction lifecycle to create data on the ledger
 
-Let’s create some transactions, invoked as different identities, to create a history of transactions on the ledger. The sequence is:
+Let’s create some transactions, invoked as different identities, to create a history of transactions on the ledger. MagnetoCorp is Org1, and DigiBank/Hedgematic are represented as Org2 for development purposes (when you move to the cloud, you will have separate Organisations with real identities issued by those orgs) The sequence is:
 
-1. Issue a paper as "MagnetoCorp."
+1. Issue a paper as "MagnetoCorp." 
 2. Buy the paper as "DigiBank," the new owner.
 3. Buy the paper as "Hedgematic," the changed owner.
 4. Redeem the paper at face value, as existing owner "Hedgematic," with MagnetoCorp as the original issuer.
 
 #### Transaction 1: Execute an `issue` transaction as MagnetoCorp
 
-1. From the IBM Blockchain Platform VS Code sidebar panel, locate the **Fabric Gateways** view and click on the `MagnetoCorp` Gateway. It will automatically connect with the single identity in the wallet, ie `MagnetoCorp Admin`. Expand the `mychannel` twisty, then  expand `papercontract@0.0.1` to reveal the list of transactions in the contract.
+1. From the IBM Blockchain Platform VS Code sidebar panel, locate the **Fabric Gateways** view and click on the `Org1` Gateway. Connect as `org1Admin`. Expand the `mychannel` twisty, then  expand `papercontract@0.0.2` to reveal the list of transactions in the contract.
 
-    <img src="/img/tutorial1/magnetogw-connect.png" title="Connect as MagnetoCorp" alt="Connect as MagnetoCorp" />
+    <img src="/img/tutorial2/org1-connect.png" title="Connect as MagnetoCorp" alt="Connect as MagnetoCorp" />
 
 2. Highlight the "issue" transaction and right-click `Submit Transaction`. A pop-up window should appear at the top.
   
@@ -319,13 +363,13 @@ Let’s create some transactions, invoked as different identities, to create a h
 
 <img src="/img/tutorial2/issue-success.png" title="Confirm issue success" alt="Confirm issue success" />
   
-5. Lastly, disconnect from the `MagnetoCorp` Gateway by clicking the 'Fabric Gateways' pane title, then click on the "disconnect" icon.
+5. Lastly, disconnect from the Org1 `MagnetoCorp` Gateway by clicking the 'Fabric Gateways' pane title, then click on the "disconnect" icon.
 
 #### Transaction 2. Execute a `buy` transaction as DigiBank
 
 1. Click once on the `DigiBank` Gateway - it will connect with the 'DigiBank Admin' identity - the only one in the wallet.
   
-2. Expand the `mychannel` twisty and then the `papercontract@0.0.1` twisty, in turn to see the transaction list.
+2. Expand the `mychannel` twisty and then the `papercontract@0.0.2` twisty, in turn to see the transaction list.
 
 3. Highlight, then right-click, the "buy" transaction and right-click "Submit Transaction." A pop-up window will appear.
 
@@ -341,7 +385,7 @@ Let’s create some transactions, invoked as different identities, to create a h
 
 #### Transaction 3. Execute another `buy` transaction - this time, as Hedgematic
 
-1. Click once on the `Hedgmatic` Gateway - it will connect with the `Hedgematic Admin` identity as the only one in the wallet.
+1. Still connected to the `Org2` gateway (this is our proxy `Hedgmatic` Gateway, for development testing purposes) - execute another `buy` transaction. The main point here is to create a trail of transactions, updating the commercial paper asset lifecycle.
   
 2. Expand the `mychannel` twisty and then the `papercontract@0.0.2` twisty, in turn.
 
@@ -360,21 +404,21 @@ Let’s create some transactions, invoked as different identities, to create a h
 Months later in this commercial paper's lifecycle, the current owner (Hedgematic) wishes to **redeem** the commercial paper "0001" at face value and get a return on the investment outlay. Typically, a client application would perform this task with a valid identity. For testing purposes, we can use the IBM Blockchain VS Code extension to do this.
 
 
-1. Still connected to the `Hedgematic` Gateway, highlight the `redeem` transaction and right-click ... "Submit Transaction." A pop-up window will appear.
+1. Still connected to the `Org2`  (Hedgematic proxy) Gateway, this time highlight the `redeem` transaction and right-click ... "Submit Transaction." A pop-up window will appear.
   
-2. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`, and hit ENTER, then hit ENTER again (to skip Transient Data and Peer Targeting):
+2. When prompted, copy/paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`, and hit ENTER, then hit ENTER again (to skip Transient Data and Peer Targeting):
   
   ```
 "MagnetoCorp","00001","Hedgematic","2020-11-30"
   ```
-  
+
 3. Check the message (in the output pane) indicating that this `redeem` transaction was successfully submitted.
 
 4. Disconnect from the `Hedgematic` Gateway using the disconnect icon (click the Fabric Gateways title to see the icon)
 
-Well done! You've completed the transaction lifecycle; now its time to do some queries!
+Well done! You've completed a full commercial paper transaction lifecycle; now its time to do some queries on the data.
 
-### Step 6. Test a simple query in the upgraded contract using the VS Code extension
+### Step 5. Test a simple query in the upgraded contract using the VS Code extension
 
 Let's test out a simply query you added, with some ledger data:
 
