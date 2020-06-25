@@ -75,7 +75,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 3. Click on the "Smart Contracts" sub-menu to expand. Then click on the ellipsis (“...”) button and choose "Package Open Project" for installing onto a peer. The package will be called something like `papercontract@0.0.1`.
 
 
-### Step 6. Connect to the 'Commerce' local Fabric, install the smart contract 
+### Step 5. Connect to the 'Commerce' local Fabric, install the smart contract 
 
 1. Under `Fabric Environment`, click on the '+' button to add a Fabric environment using `Create new from template`
 
@@ -94,18 +94,18 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
     <img src="/img/tutorial1/install-contractonpeers.png" title="Install contract on all peers" alt="Install contract on all peers" />
 
 
-7. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
+6. Next, you will instantiate the smart contract on the channel `mychannel` by clicking on 'Instantiate' under Fabric Environments and choosing `papercontract@0.0.1` as the contract to use.
 
     <img src="/img/tutorial1/choose-contract.png" title="Choose contract" alt="Choose contract" />
 
 
-8. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
+7. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
 
     <img src="/img/tutorial1/instantiate-function.png" title="Instantiate function" alt="Instantiate function" />
     
-9. Press `enter` to accept the default for 'no parameters' to provide
+8. Press `enter` to accept the default for 'no parameters' to provide
 
-10. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
+9. Press `enter` to accept the default 'No' to add a private data collection and press `enter` to accept the 'Default' single endorser, when prompted
 
     <img src="/img/tutorial1/confirm-instantiation.png" title="Confirm contract instantiation" alt="Confirm contract instantiation" />
     
@@ -115,7 +115,7 @@ You can launch VS Code from your task bar, or by typing `code` in a terminal win
 OK, we now have a deployed contract. The 2-organization template also creates some default admin identities (for the respective organisations) that we will use in this tutorial to interact with the 'Commerce' network (Org1: MagnetoCorp and Org2: DigiBank).
 
 
-### Step 7. Execute the commercial paper smart contract transactions from client applications: MagnetoCorp and DigiBank
+### Step 6. Execute the commercial paper smart contract transactions from client applications: MagnetoCorp and DigiBank
 
 So far, you've installed and instantiated your smart contract on the Commerce blockchain network. Now it's time to try out the smart contract transactions as a developer.
 
