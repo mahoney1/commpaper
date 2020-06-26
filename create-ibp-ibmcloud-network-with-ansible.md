@@ -121,7 +121,7 @@ You will shortly see it build the IBM Blockchain Platform.
 
 Now is a good time to go to your 'empty' IBM Blockchain Platform Console you launched earlier, as you can see the nodes being added in the console (sometimes you will need to toggle between 'Nodes' and 'Channels' and back to 'Nodes' to see the very latest status of a node being provisioned.
 
-
+<img src="/img/tutorial3/provisioned-ibp-env.png" title="IBP nodes being provisioned" alt="IBP nodes being provisioned" />
 
 1. In VS Code, `contracts` should be your top-level folder.
 
