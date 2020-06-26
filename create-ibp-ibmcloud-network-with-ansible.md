@@ -1,10 +1,10 @@
 ## Scenario
 
-Having successfully run and then upgrade the Commercial Paper  smart contract ( on the'Commerce' network) with added query functionality, MagnetoCorp, DigiBank and Hedgematic - all part of a blockchain consortium, wish to start a network in IBM Blockchain Platform in IBM Cloud.
+Having successfully run and then upgraded the Commercial Paper smart contract ( on the'Commerce' network) in tutorial 2 to add extensive query functionality, MagnetoCorp, DigiBank and Hedgematic - all part of a blockchain consortium - wish to get started with their network in IBM Blockchain Platform in IBM Cloud. The contract will be deployed, they they can carry out 'business as usual'.
 
-The aim of this tutorial, is to show how the IBM Blockchain Platform Ansible collection](https://github.com/IBM-Blockchain/ansible-collection/blob/master/README.md) can be used to provision an IBM Blockchain Platform network in each organisation. Your `papercontract` smart contracted created in the previous tutorials, will be deployed to this network. For the purposes of this tutorial, all 3 organisation's nodes will be deployed to the same 30-day trial cluster.
+The aim of this tutorial, is to show how the [IBM Blockchain Platform Ansible collection](https://github.com/IBM-Blockchain/ansible-collection/blob/master/README.md) can be used to provision an IBM Blockchain Platform network for each organisation. Your `papercontract` smart contract is deployed to this network. For the purposes of this tutorial, all 3 organisation's nodes will be deployed to the same 30-day trial cluster. You can get [information on how to get this cluster](https://cloud.ibm.com/docs/blockchain?topic=blockchain-ibp-saas-pricing#ibp-saas-pricing-free) and use it free for 30 days.
 
-This ansible collection is fully-scripted for you; all you have to do is get your free cluster, then 'press the button'. If you want to read more on IBM Blockchain Ansible collections, including a tutorial - check it out [here](https://ibm-blockchain.github.io/ansible-collection/) 
+The ansible collection is fully-scripted for you; all you have to do is: get your free cluster, set up an IBM Blockchain Platform service, then: 'press the button'. If you want to read more on IBM Blockchain Ansible collections, including a tutorial - check it out [here](https://ibm-blockchain.github.io/ansible-collection/) 
 
 Once provisioned, you interact with the contract using: 
 
@@ -16,9 +16,9 @@ The last part of the tutorial will see you using a HTML 5 client app to render a
 
 ## Pre-requisites
 
-1. Create your free cluster `mycluster` in IBM Cloud -you can[preview the IBM Blockchain Platform in IBM Cloud at no charge for 30 days](https://cloud.ibm.com/registration?target=%2Fcatalog%2Fservices%2Fblockchain).
+1. Log into IBM Cloud and create your free cluster `mycluster` in IBM Cloud -you can[preview the IBM Blockchain Platform in IBM Cloud at no charge for 30 days](https://cloud.ibm.com/registration?target=%2Fcatalog%2Fservices%2Fblockchain).
 
-It will take a couple of hours to have the IBM Kubernetes cluster available (`Status: Green` in your Cloud environment). 
+It will take a couple of hours to have the IBM Kubernetes cluster provisioned and available (`Status: Green` in your Cloud environment). 
 
 2. Once the cluster is available,  create your IBM Blockchain Platform service instance via the IBM Cloud Catalog](https://cloud.ibm.com/catalog/services/blockchain-platform). Eg name: `Blockchain-Platform-ibp`
 
@@ -49,27 +49,79 @@ You will now create some service credentials, which are crucial for the Ansible 
 
 <img src="/img/tutorial3/create-credentials.png" title="Create Service Credentials" alt="Create Credentials" />
 
-8. When prompted - create credentials with the name `ibp-credentials` and click `Add` - your credentials have been created. Now you can return to the browser tab with the IBM Blockchain Platform Console open.
+8. When prompted - create credentials with the name `ibp-creds1` and click `Add` - your credentials have been created. Now you can return to the browser tab with the IBM Blockchain Platform Console open.
 
 <img src="/img/tutorial3/credentials-added.png" title="Credentials added" alt="Added Credentials" />
 
+9. Copy the credentials using the copy icon on the right - then open a terminal window and 
+
+10. Open up a terminal and change directory to the `commpaper` repo (eg in your $HOME directory) - then change to subdirectory `ansible`
+
+```
+cd $HOME/commpaper
+cd ansible/
+```
+11. Create a file called `creds.txt` and paste in the Cloud credentials you copied into this file (approx 6 lines in JSON format) to this file - save the file. 
 
 
 ## Steps
 
 ### Step 2. Locate the Ansible collection and launch the ansible builder.
 
-In this section, you will launch the ansible provisioner to get our three organisations - each will have one peer and one CA. There will also be a seperate Ordering service. Lastly, you will provision your `papercontract@0.0.2` smart contract this network.
+In this section, you will launch the ansible provisioner to get our three organisations - each will have one peer and one CA. There will also be a separate Ordering service. Lastly, you will provision your `papercontract@0.0.2` smart contract this network.
 
-1. Open up a terminal and change directory to the `commpaper` repo (eg in your $HOME directory) - then change to subdirectory `tutorial'
+1. You'll need to clone the IBM Blockchain Platform Ansible collection repo  and change directory into it:
 
 ```
-cd $HOME/commpaper
-cd tutorial
+ git clone https://github.com/IBM-Blockchain/ansible-collection.git
+ cd ansible-collection
 ```
 
-2. Locate the file xxx and a
-2. Launch the ansible script - note that at the beginning, it make take a little while to download an ansible image - which will be used to create a containerized provisioner to build the network remotely in IBM Cloud
+2. You will need to get the pre-requisite images for Ansible itself (as outlined in the [Installation pages](https://ibm-blockchain.github.io/ansible-collection/installation.html)  - and for this, we''ll use the option to build a Docker image containing all the pre-requisites. There is a `Dockerfile` in the `docker subdirectory which we can build the IBM Blockchain Platform ansible image from now. Use the following command to build the image. Please don't forget the '.' at the end of the 2nd command (`docker build`):
+
+```
+cd docker
+docker build --tag myansible:latest .
+```
+<img src="/img/tutorial3/docker-build.png" title="Docker build" alt="Ansible docker build" />
+
+This build will take approx 15mins or so to complete, please note. Once complete, you will have a docker image (checked using `docker images`) that's tagged `myansible:latest`. 
+
+We're now ready to build our IBM Blockchain Platform network.
+
+<img src="/img/tutorial3/tagged-build.png" title="Docker build complete" alt="Ansible build tagged" />
+
+
+3. Change directory to the `commpaper/ansible/tutorial` directory
+
+```
+cd $HOME/commpaper/ansible/tutorial
+```
+
+4. Next - you need to edit 3 files `org1-vars.yml`, `org2-vars.yml` and `org3-vars.yml` - these 3 organisation variable files need the `api_endpoint` and `api_key` lines edited. An example is lines 5 and 7 in the sample `org1-vars.yml` shown below (some of the credentials are greyed out for security purposes) - note that you can leave the `api_secret` variable on line 8 as `xxxxxx` - this is not used. All the other variables in the file **can also remain exactly as they are** - but take note of the values:
+
+<img src="/img/tutorial3/edit-orgvariables.png" title="Edit organisation variables" alt="Edit the organisation variables" />
+
+Ensure you edit files `org2-vars.yml` and `org3-vars.yml` in turn, so that the first 4 lines  (beginning with `api_endpoint`) of each org YAML file are identical. 
+
+5. The last file to edit is `ordering-org-vars.yml` - the ordering service variables YAML file also needs the api information - carry out **exactly** the same changes as in the step for editing the organisation YAML files in the previous step. So again, the first 4 lines of this file are identical to those added in the previous step.
+
+
+You've now completed your edits. Next, launch the ansible to build the 3 org network. This will run a set of ansible playbooks.
+
+6.  Ensure you are in the `tutorial` directory to run this command - as this is the mount point (-v) into the container instance launched below:. Also ensure the file `tutorial.sh` has execute permissions (it should have after cloning earlier).  
+
+```
+docker run --rm -v "$PWD:/tutorial" myansible:latest /tutorial/tutorial.sh
+```
+
+You will shortly see it build the IBM Blockchain Platform. 
+
+<img src="/img/tutorial3/run-ansible-script.png" title="Run the ansible build" alt="Run the IBP Ansible build" />
+
+Now is a good time to go to your 'empty' IBM Blockchain Platform Console you launched earlier, as you can see the nodes being added in the console (sometimes you will need to toggle between 'Nodes' and 'Channels' and back to 'Nodes' to see the very latest status of a node being provisioned.
+
+
 
 1. In VS Code, `contracts` should be your top-level folder.
 
