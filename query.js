@@ -1,4 +1,3 @@
-
 /*
 SPDX-License-Identifier: Apache-2.0
 */
@@ -38,8 +37,8 @@ class QueryUtils {
             throw new Error('Incorrect number of arguments. Expecting 1');
         }
         // ie namespace + prefix to assets etc eg 
-        // "Key":'org.papernet.commercialpaperlist"MagnetoCorp""00001"' [00001, 00002 etc]
-        // "Partial":'org.papernet.commercialpaperlist"MagnetoCorp"'
+        // "Key":'org.papernet.commercialpaperlist'MagnetoCorp'00001' [00001, 00002 etc] composite key
+        // "Partial - 2 elements ":'org.papernet.commercialpaperlist'MagnetoCorp'
         const resultsIterator = await this.ctx.stub.getStateByPartialCompositeKey(this.name,[assetspace]);
         let method = this.getAllResults;
         let results = await method(resultsIterator, false);
@@ -171,90 +170,6 @@ class QueryUtils {
         return results;
     }
 
-    // =========================================================================================
-    // getDeltas takes getHistory results for an asset and returns the deltas
-    // =========================================================================================
-
-    async getDeltas(obj) {
-
-        let deltaArr = [];
-        let counter = 0;
-        let xtra_checked;
-
-        Object.getOwnPropertyNames(obj).forEach(function (key, idx) {
-            xtra_checked = 0;
-            let stdfields = 'TxId, Timestamp, IsDelete';
-
-            for (let field of Object.keys(obj[key])) {
-                let val = obj[key];
-                counter = idx + 1;
-                let val2 = obj[counter];
-
-                if (counter < obj.length) {
-
-                    if ((stdfields.indexOf(field)) > -1) {
-                        deltaArr.push(field, val[field]);
-                    }
-
-                    if (field === 'Value') {
-
-                        for (let element of Object.keys(val[field])) { // Value stanza
-                            // changes: of value, existing field
-                            if (val2[field].hasOwnProperty(element) && (val[field][element] !== val2[field][element])) {
-                                deltaArr.push(element, val2[field][element]);
-                            }
-                            // deletes: field/val deleted (! item.next))
-                            if ((!val2[field].hasOwnProperty(element))) {
-                                deltaArr.push(element, val[field][element]);
-                            }
-                            // adds: (new in item.next),add once only!
-                            if (!xtra_checked) {
-                                for (let xtra of Object.keys(val2[field])) {
-                                    //console.log("xtra is " + val2[field][xtra] + "checking field " + xtra + "bool " + val[field].hasOwnProperty(xtra) );
-                                    if ((!val[field].hasOwnProperty(xtra))) {
-                                        deltaArr.push(xtra, val2[field][xtra]);
-                                    }
-                                }
-                                xtra_checked = 1;
-                            } // if xtra
-                        } // for each 'element' loop
-                    } // if 'Value' in payload
-                } // if less than obj.length
-            } // for each 'field' loop
-        }  // 'foreach' loop
-        ); //closing Object.keys
-
-        return deltaArr;
-    } // async getDeltas
-
-    // =========================================================================================
-    // jsontabulate takes getDelta results array and returns the deltas in tabulator(.info) form
-    // rendered as a nicely formatted table in HTML
-    // =========================================================================================
-
-    jsontabulate(array) {
-        let i = 1;
-        let length = array.length;
-        let val = '[{'; // begins with - FYI below, each element is stripped of "" by key/value stepthru
-        for (let [key, value] of Object.entries(array)) {
-            console.log('key is' + key + 'value is ' + value);
-            if (i > 1 && ((i % 2) === 0)) {
-
-                if (i < length) {
-                    val = val + '"' + value + '"' + ',';
-                }  // (output 2-tuple)
-                else {
-                    val = val + '"' + value + '"}]';
-                }  // last record
-            }
-            else {
-                if (value === 'TxId') { val = val.replace(/,$/, '},{'); } // delimit each record, just before TxId
-                val = val + '"' + value + '"' + ':';   // key:value
-            }
-            i++;
-        }
-        return val;
-    }
 
 }
 module.exports = QueryUtils;
