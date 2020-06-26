@@ -304,25 +304,23 @@ Next, we will upgrade our smart contract to ensure the new functionality is avai
 
 3. Under the **Fabric Environments** panel in the IBM Blockchain Platform sidebar, connect to the `Commerce` environment
 
-
 4. Navigate to 'Smart Contracts' and under `Instantiated` .. right click on `papercontract@0.0.1` and choose to `Upgrade Smart Contract`
-
 
 <img src="/img/tutorial2/upgrade-contract.png" title="Upgrade smart contract" alt="Upgrade smart contract" />
 
-4. When prompted, select to install on all peers by choosing the 'select all' button and click 'OK' - the upgrade should report as being successful, after the new version (0.0.2) has been installed on all 3 peers.
+5. When prompted, select to install on all peers by choosing the 'select all' button and click 'OK' - the upgrade should report as being successful, after the new version (0.0.2) has been installed on all 3 peers.
 
 <img src="/img/tutorial2/install-contractonpeers.png" title="Install smart contract" alt="Install smart contract" />
 
-5. Right-click on `papercontract@0.0.1` -- **Upgrade Smart Contract**, and choose `papercontract@0.0.2` from the list presented (in the popup) - select to install on all peers.
+6. Right-click on `papercontract@0.0.1` -- **Upgrade Smart Contract**, and choose `papercontract@0.0.2` from the list presented (in the popup) - select to install on all peers.
 
-6. Choose the contract `papercontract@0.0.2` as the contract to use.
+7. Choose the contract `papercontract@0.0.2` as the contract to use.
 
-7. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
+8. When prompted, enter `instantiate` (all lower case) as the function name to call during instantiation.
 
-8. Press `enter` to accept the default for 'no parameters'
+9. Press `enter` to accept the default for 'no parameters'
 
-9. Press `enter` to accept the default 'No' to add a private data collection and again, press `enter` to accept the 'Default' single endorser, when prompted
+10. Press `enter` to accept the default 'No' to add a private data collection and again, press `enter` to accept the 'Default' single endorser, when prompted
 
 You should get a message that the new contract was installed on peers and that it was instantiated successfully (and you will see the running contract v0.0.2 under 'Instantiated' on the sidebar on the left).
  
@@ -330,11 +328,11 @@ You should get a message that the new contract was installed on peers and that i
    
 Well done! You have now added rich query and advanced query functionality to the smart contract. Its now time to test the new transactions.
 
-10. Connect to the `Org2 Gateway` (if not already connected) and expand the channel `mychannel` and contract `papercontract@0.0.2`.  Expand the contract to see the transactions - you'll see the new query functions that you can try out shortly. 
+11. Connect to the `Org2 Gateway` (if not already connected) and expand the channel `mychannel` and contract `papercontract@0.0.2`.  Expand the contract to see the transactions - you'll see the new query functions that you can try out shortly. 
 
 <img src="/img/tutorial2/confirm-functions.png" title="Confirm query functions" alt="Confirm query functions" />
 
-11. Diconnect from `Org1 Gateway` at this point.
+12. Diconnect from `Org1 Gateway` at this point.
 
 ### Step 4. Perform the issue, buy, and redeem transaction lifecycle to create data on the ledger
 
@@ -356,7 +354,7 @@ Let’s create some transactions, invoked as different identities, to create a h
 3. When prompted, copy and paste the following parameters (incl. double-quotes) **inside** the existing square brackets "[]" and hit ENTER. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`. **Make sure there are no trailing ' ' spaces** in your input to transactions:
 
   ```
-"MagnetoCorp","00001","2020-05-31","2020-11-30","5000000"
+"MagnetoCorp","0001","2020-05-31","2020-11-30","5000000"
   ```
   
 4. Check the message (in the **Output** pane) indicating that this transaction was successfully submitted.
@@ -376,7 +374,7 @@ Let’s create some transactions, invoked as different identities, to create a h
 4. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`:
   
   ```
-"MagnetoCorp","00001","MagnetoCorp","DigiBank","4900000","2020-05-31"
+"MagnetoCorp","0001","MagnetoCorp","DigiBank","4900000","2020-05-31"
   ```
   
 5. Once again, check the message (in the output pane) indicating that this transaction was successfully submitted.
@@ -394,7 +392,7 @@ Let’s create some transactions, invoked as different identities, to create a h
 4. When prompted, copy and paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`. Hit ENTER to accept defaults for the next two prompts:  `Transient data` entry, and  `DEFAULT peer targeting policy`:
 
   ```
-"MagnetoCorp","00001","DigiBank","Hedgematic","4930000","2020-06-15"
+"MagnetoCorp","0001","DigiBank","Hedgematic","4930000","2020-06-15"
   ```
 5. Again, check the results for a successful transaction in the `Output` pane.
 
@@ -409,7 +407,7 @@ Months later in this commercial paper's lifecycle, the current owner (Hedgematic
 2. When prompted, copy/paste the following parameters (incl. the double-quotes) **inside** the square brackets, `[]`, and hit ENTER, then hit ENTER again (to skip Transient Data and Peer Targeting):
   
   ```
-"MagnetoCorp","00001","Hedgematic","2020-11-30"
+"MagnetoCorp","0001","Hedgematic","2020-11-30"
   ```
 
 3. Check the message (in the output pane) indicating that this `redeem` transaction was successfully submitted.
@@ -422,73 +420,51 @@ Well done! You've completed a full commercial paper transaction lifecycle; now i
 
 Let's test out a simply query you added, with some ledger data:
 
-1. Connect to the `MagnetoCorp` Gateway (it uses the default Admin identity),  expand the channel `mychannel` and `papercontract@0.0.2` twisties - right-click on the transaction `getInvoker` and choose `Evaluate Transaction` - there are no parameters to this function - just hit `enter` - the Output pane should show that the current invoker is 'MagnetoCorp Admin'
+1. Connect to the `Org1` Gateway (MagnetoCorp) as `org1Admin`,  expand the channel `mychannel` and `papercontract@0.0.2` twisties - right-click on the transaction `getInvoker` and choose `Evaluate Transaction` - there are no parameters to this function - just hit `enter` - the Output pane should show that the current invoker is 'MagnetoCorp Admin'
 
-This function is also a 'worker' function (used elsewhere in the contract) to get the current invoking identity - useful for reporting purposes later on as we'll see.
+This function is really a 'worker' function (used elsewhere in the contract) to get the current invoking identity - useful for reporting purposes later on as we'll see.
 
-2. The other functions perform rich queries - MicroFab uses LevelDB right now - but you can easily start up a `1 Org Local Fabric` environment under `Fabric Environments` which uses CouchDB. Go ahead and do this now. 
-
-3. As shown previously, install / instantiate the `papercontract@0.0.4` contract package by connecting to the `1 Org` environment and quickly running the Transactions #1 -> #4 above before proceeding.
-
-4. Next, having instantiated the contract on the `1 Org Fabric` environment - expand the channel `mychannel` and contract `papercontract@0.0.4` -- then right-click on the `queryHist` query transaction and click `Evaluate Transaction` 
+2. The other functions added perform rich queries and more advanced queries - let's get a history of the paper asset added. Right-click on the `queryHist` query transaction and click `Evaluate Transaction` 
 
     <img src="/img/tutorial2/choose-queryhist.png" title="Running queryHist transaction" alt="Running queryHist transaction" />
 
 3. Provide the following parameters inside the `[ ]` square brackets, including the quotes:
 
-"MagnetoCorp", "0001"
+"MagnetoCorp","0001"
     
 4. Accept the defaults by simply hitting `enter` for the next 3 prompts (accept the defaults)
 
-The output panel should reveal a JSON formatted data listing, showing the history of Commercial paper asset "MagnetoCorp0001".
+The output panel should reveal a JSON formatted data listing, showing the history of Commercial paper asset key "MagnetoCorp:0001".
 
-5. Let's try another query - this time, query the list of Commercial papers owned by an organization using the `queryByOwner` transaction function. Highlight this transaction...right-click...`Evaluate Transaction` - supply one parameter inside the `[ ]` brackets, as follows:
+    <img src="/img/tutorial2/history-output.png" title="queryHist output" alt="queryHist output" />
 
-"Hedgematic"
+5. Let's try another query - this time, query the list of Commercial papers owned by an organization using the `queryOwner` transaction function. Highlight this transaction...right-click...`Evaluate Transaction` - supply one parameter inside the `[ ]` brackets, as follows:
+
+"MagnetoCorp"
 
 6. Accept the defaults by simply hitting `enter` for the next 3 prompts (accept the defaults)
 
-The output panel should reveal a JSON formatted data listing, showing the Commercial paper assets owned by Hedgematic (1 paper).
+The output panel should reveal a JSON formatted data listing, showing the Commercial paper assets owned by MagnetoCorp (1 paper - after the 'redeem' transaction, ownership changed from Hedgematic -> MagnetoCorp).
 
+    <img src="/img/tutorial2/queryowner-output.png" title="queryOwner output" alt="queryOwner output" />
+
+7. Optionally, try out the `queryPartial` transaction using `Evaluate Transaction` - this finds all assets in the asset namespace `MagnetoCorp` (there can be many assetspaces under the domain `org.papernet.commercialpaperlist` in the ledger). Supply one parameter:
+
+"MagnetoCorp"
+
+    <img src="/img/tutorial2/querypartial-output.png" title="query by Partial key output" alt="query by Partial key output" />
+    
 OK, so our query functions appear to be working fine. Our contract is ready. Now we need to deploy this to a 'real' network, which you'll create (by means of an automated Ansible script) once you create your free cluster in IBM Cloud (You can [preview the IBM Blockchain Platform at no charge for 30 days](https://cloud.ibm.com/registration?target=%2Fcatalog%2Fservices%2Fblockchain).
 
-You will need to create, then link your IBM Blockchain Platform service instance to the IBM Cloud Kubernetes free cluster. Create the as a cluster called `mycluster` and then link the IBM Blockchain Platform service, before you start the third tutorial. We'll tell you how to get your credentials from IBM Blockchain Platform, so you can provide them to Ansible to authenticate and provision the 'Commerce' 3-org network.
+You will need to create, then link  - your IBM Blockchain Platform service instance to the IBM Cloud Kubernetes free cluster. Create the cluster with the name `mycluster` and then link, the IBM Blockchain Platform service that you create via the IBM Cloud catalog - before you start the third tutorial. We'll tell you how to get your credentials from IBM Blockchain Platform instance there (so you can provide these to the Ansible collection you will use so Ansible can authenticate and provision the 'Commerce' 3-org network).
 
-### Step 7. Display the history in a nice HTML-based UI
-
-For this step, you use a simple [Tabulator](http://tabulator.info/examples/4.1) that renders your results in an HTML table. You don’t have to install any code or client per se, nor use jQuery -- you will use a simple, local HTML file that uses online CSS formatting and loads the results as JSON (avoiding CORS issues in Firefox) and render it in the table. That index.html file comes from the "commpaper" Github repo cloned previously; please take some time to peruse the HTML file.
-
-**Note:** This HTML file is provided as-is, and is purely used for rendering in a Firefox browser. At the time of this writing, some of the JavaScript formatting (it doesn't use jQuery) does not work in Chrome (which doesn't like `forEach`), but has been tested in Firefox.
-
-1. In a terminal window, open the DigiBank `application` directory once again (you should already be there).
-
-2. Copy the index.html file from the `commpaper` repo (cloned earlier) into the directory (with the trailing "." for the current directory):
-
-  ```
-  cp $HOME/commpaper/index.html .
-  ```
-
-  If you examine the HTML file in VS Code Explorer, you’ll see that it loads a results file called results.json (created by the queries app invoked earlier) as JSON.
-
-3. Launch a Firefox browser session (see note above) providing the index.html file provided as a parameter -- tested with Firefox:
-
-  ```
-  firefox index.html
-  ```
-
-4. You should see the results in tabular form in the browser; expand or contract column widths as necessary, such as longer columns like `Txn ID`. Note that `TxId` here is the Fabric transaction ID. The `Invoking ID` is the invoker Common Name, which is extracted using the Client Identity library mentioned earlier. Obviously, this would need to be made available as an attribute by any of the organizations that execute transactions using this shared smart contract. As an alternative, a hash of the signer certificate can be used.
-
-  **Figure 10. Commercial paper: Asset history report**
-  ![Commercial Paper: Asset History Report](images/fig10b.png)
-
-Well done! You've now managed to successfully add query functionality to the commercial paper sample smart contract using the IBM Blockchain Platform VS Code extension.
 
 ## Summary
 
-This tutorial showed you how to add queries and upgrade your existing commercial paper contract using the IBM Blockchain Platform VS Code extension and use features from Hyperledger Fabric's new programming model. Take time to peruse the transaction (query) functions in both papercontract.js and the query class file query.js under the `lib` directory. And be sure to peruse the client application, queryapp.js.
+This tutorial showed you how to upgrade your smart contract through local development, and add simple, rich and advanced queries to thecommercial paper contract using the IBM Blockchain Platform VS Code extension, and use features from Hyperledger Fabric's new programming model. Take time to peruse the transaction (query) functions in both `papercontract.js` and the query class file `query.js` under the `lib` directory. 
 
-You've learned how to render the history results (the history of a commercial paper asset) in a simple browser-based HTML application. The final tutorial in this series will show only changes during the lifecycle.
+You've learned how to query the history or ownership of an asset and are now confident to deploy your use case to a real blockchain network.
 
-As a last step, it is good practice to close out your current folders in VS Code, in preparation for the next tutorial. [The third and final tutorial in this series](https://developer.ibm.com/tutorials/add-further-query-functionality-using-the-ibp-vscode-extension/) will show you how to add smart contract functionality to query only the deltas for the history of a particular asset.
+As a last step, it is good practice to close out your current folders in VS Code, in preparation for the next tutorial. [The third and final tutorial in this series](https://developer.ibm.com/tutorials/add-further-query-functionality-using-the-ibp-vscode-extension/) will show you how interact with this same `papercontract` smart contract in an IBM Blockchain Platform network consisting of 3 organisations. You will connect up some Node.Js applications and use the extension to interact with that network.
 
 Until then, thanks for joining me!
