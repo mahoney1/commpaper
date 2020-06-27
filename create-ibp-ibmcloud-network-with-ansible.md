@@ -66,7 +66,7 @@ cd ansible/
 
 ## Steps
 
-### Step 2. Locate the Ansible collection and launch the ansible builder.
+### Step 1. Locate the Ansible collection and launch the ansible builder.
 
 In this section, you will launch the ansible provisioner to get our three organisations - each will have one peer and one CA. There will also be a separate Ordering service. Lastly, you will provision your `papercontract@0.0.2` smart contract this network.
 
@@ -119,13 +119,37 @@ You will shortly see it build the IBM Blockchain Platform.
 
 <img src="/img/tutorial3/run-ansible-script.png" title="Run the ansible build" alt="Run the IBP Ansible build" />
 
-Now is a good time to go to your 'empty' IBM Blockchain Platform Console you launched earlier, as you can see the nodes being added in the console (Note:  you will need to toggle between 'Nodes' and 'Channels' (ignoring messages about unable to find wallets) and back to 'Nodes' to see the very latest status of a node being provisioned.
+Now is a good time to go to your 'empty' IBM Blockchain Platform Console you launched earlier - best to do this using a browser inside your virtual machine (for Step 2 below), as you can see the nodes being added in the console (Note:  you will need to toggle between 'Nodes' and 'Channels' (ignoring messages about unable to find wallets) and back to 'Nodes' to see the very latest status of a node being provisioned.
 
 <img src="/img/tutorial3/provisioned-ibp-env.png" title="IBP nodes being provisioned" alt="IBP nodes being provisioned" />
 
-Your IBP Blockchain Platform environment should now be provisioned - you will be at the point where the smart contract is installed on all peers - you will instantiate it manually. Note also that there are a list of exported node and identity JSON files. These include the CA and Peer Admin identities that you can use to import in the IBM Blockchain Platform console - and also - to import into the IBM Blockchain Platform
+Your IBP Blockchain Platform environment should now be provisioned - you will be at the point where the smart contract is installed on all peers - you will instantiate it manually. Note also that there are a list of exported node and identity JSON files. These include identities that you can use to import in the IBM Blockchain Platform console - and also - to conveniently import into the IBM Blockchain Platform VS Code extension (or your application clients) to connect your blockchain network. One very useful feature of the IBP VS Code extension is that you can import your Cloud commerce network nodes under 'Fabric Environments' by connecting to it using your IBM Cloud id and password - just login using `ibmcloud login` from the command line first, and authenticate to the cloud. For the purposes of this tutorial, we will just the Gateway and identity JSON files to import.
 
-7. Go to the Wallets icon on the left and click 'Add Identity'. Upload each of `MagnetoCorp Admin`, `DigiBank Admin` and `Hedgematic Admin` json files.
+<img src="/img/tutorial3/list-of-jsons.png" title="List of JSON files" alt="List of JSON files" />
+
+### Step 2. Instantiate the smart contract on the Commerce network in IBM Cloud
+
+
+1.  Go to the `Wallets` icon on the left and click 'Add Identity'. Upload each of `MagnetoCorp Admin`, `DigiBank Admin` and `Hedgematic Admin`  using the `Uploadjson` option.
+
+<img src="/img/tutorial3/add-identities.png" title="Add identities" alt="Add identities" />
+
+3. Next, click on the `Nodes` icon and click on each peer, and select each identity to associate with that Organisation's peer.
+
+<img src="/img/tutorial3/associate-identity.png" title="Associate identity" alt="Associate identity" />
+
+2. Click on the  `Smart Contracts` icon on the left. It will show that under 'Smart Contracts' the `papercontract@0.0.3` is already installed on the peers. Click on the `ellipsis` icon on the right and select `Instantiate Contract`
+
+<img src="/img/tutorial3/instantiate-contract.png" title="Instantiate contract" alt="Instantiate contract" />
+
+4. When prompted, select the channel `mychannel` for `papercontract@0.0.3`, accept the defaults but for the function name enter the name `instantiate` as the function to call. It will take a minute or two to instantiate. Note we choose to show concepts of operations here to instantiate - it should be noted that the Ansible script could be extended to instantiate the contract, as well as installing it on all peers - FYI.
+
+
+### Step 3. Connect to the Commerce Network on IBM Blockchain Platform in IBM Cloud
+
+1. Return to the IBM Blockchain Platform VS Code extension in your development by clicking on the extensions's icon.
+
+2. Click on 
 
 ** STOPPED HERE**
 
