@@ -9,9 +9,6 @@ SPDX-License-Identifier: Apache-2.0
  * 3. Access PaperNet network
  * 4. Construct request to query commercial paper history and submit ('evaluate') other query transactions
  * 5. Process responses that are returned (eg display, render in a browser etc)
- *
- * Supply two parameters to the client app: <organisation name> and <identity name>
-   eg  node clientapp.js DigiBank david
  */
 
 'use strict';
@@ -21,9 +18,10 @@ const fs = require('fs');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 
 
-var args = process.argv.slice(2);
-if ( typeof args === "undefined" ) { 
-        console.log('no args provided on command line - please provide 2: orgname and identity name');
+var args = process.argv.slice(2); // reset 
+
+if ( process.argv[3] === undefined ) { 
+        console.log('not enough args were provided on command line: please provide 2: orgname and identity name');
         process.exit(-1);
         //throw new Error('No argument was supplied - undefined - please try again');
 }
