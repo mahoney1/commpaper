@@ -348,7 +348,7 @@ You should see a report of your asset data (its dependent on `results.json` exis
 
 <img src="/img/tutorial3/html-asset-report.png" title="Render Asset History report" alt="Render Asset History report" />
 
-### Step 8. Edit the client application to get asset history Deltas only
+### Step 8. Edit the client application to render asset history deltas report in HTML 5 browser app.
 
 In this section, edit the `clientqueryapp.js`  and add a piece of code to get deltas only from the history records - this represents a smaller payloads when considering voluminous asset histories.
 
