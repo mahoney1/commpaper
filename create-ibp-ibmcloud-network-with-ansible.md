@@ -348,6 +348,47 @@ You should see a report of your asset data (its dependent on `results.json` exis
 
 <img src="/img/tutorial3/html-asset-report.png" title="Render Asset History report" alt="Render Asset History report" />
 
+### Step 8. Edit the client application to get asset history Deltas only
+
+In this section, edit the `clientqueryapp.js`  and add a piece of code to get deltas only from the history records - this represents a smaller payloads when considering voluminous asset histories.
+
+1. Edit `clientqueryapp.js` and at line 105 (just before the comment line  `// queryOwner the OWNER of a commercial paper`
+
+2. Paste in the following code segment and ensure you save your javascript client file.
+
+```
+console.log('Calling queryDeltas to get the deltas of Commercial Paper instance 0001');
+     console.log('========================================================================');
+
+     // QUERY the deltas of a commercial paper providing it the Issuer/paper number combo below
+     let deltaResponse = await contract.evaluateTransaction('queryDeltas', 'MagnetoCorp', '0001');
+     deltaResponse = "data = '" + deltaResponse.toString().replace(/\\"/g,'') + "'";
+
+     // parse the response sent back from contract -> client app
+     let file2 = await fs.writeFileSync('deltas.json', deltaResponse, 'utf8');
+     console.log('the query DELTAS response is ' + deltaResponse);
+     console.log(' ');
+
+     console.log('Transaction complete.');
+     console.log(' ');
+```
+
+This code calls the `queryDeltas` function you added when enhancing the smart contract earlier, and will write the results out to a file called `deltas.json` - you'll use another HTML client to get this Deltas report.
+
+3. Now invoke the upgraded client app just as you had done before:
+
+```
+node clientapp.js DigiBank  david
+```
+
+4. Now using the provided `deltas.html` provided in the Github repo, render the results in `deltas.json` in your browser app - you'll provide a parameter to this file
+
+<img src="/img/tutorial3/html-deltas-report.png" title="Render Deltas History report" alt="Render Asset History report" />
+
+You should see a report of your asset data (its dependent on `deltas.json` existing above) and here you'll see a history of deltas for asset `0001`. The third and fourth column are provided as padding for the report (they're not necessarily 'changed' between asset updates FYI).
+
+### Optional Exercise: Gain insights into your blockchain transactions in the IBM Blockchain Platform console.
+
 As a further optional exercise, you can return to your IBM Blockchain Platform Console and browse your transaction history via the IBM Blockchain Platform console. 
 
 5. Simply click on the `Channels` icon - then select `mychannel` and review the transaction history by clicking on a block and then clicking on the transaction id listed, to see the contents of the transaction. You'll be able to easily reconcile this data,  with the transactions you performed earlier. Feel free to browse the transaction data in your block list.
@@ -355,7 +396,7 @@ As a further optional exercise, you can return to your IBM Blockchain Platform C
 Well done! You've completed the full set of 3 tutorials.
 
 
-## Summary.
+## Summary
 
 
 Lets recall what you've completed during the course of this tutorial series:
