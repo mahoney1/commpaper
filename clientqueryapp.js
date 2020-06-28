@@ -80,18 +80,18 @@ async function main() {
         const contract = await network.getContract('papercontract');
 
 	// console.log('issue a transaction');
-	// const issueResponse = await contract.submitTransaction('issue', 'MagnetoCorp', '00001', '2020-05-31', '2020-11-30', '5000000');
+	// const issueResponse = await contract.submitTransaction('issue', 'MagnetoCorp', '0001', '2020-05-31', '2020-11-30', '5000000');
 	// let paper = CommercialPaper.fromBuffer(issueResponse);
 
         // console.log(issueResponse.toString());
         /// console.log('Transaction complete.');
 
         console.log(' ');
-        console.log('Calling queryHist to get the history of Commercial Paper instance 00001');
+        console.log('Calling queryHist to get the history of Commercial Paper instance 0001');
         console.log('=======================================================================');
         console.log(' ');
         // QUERY the history of a commercial paper providing it the Issuer/paper number combo below
-        let queryResponse = await contract.evaluateTransaction('queryHist', 'MagnetoCorp', '0002');
+        let queryResponse = await contract.evaluateTransaction('queryHist', 'MagnetoCorp', '0001');
         queryResponse = "data = '" + queryResponse.toString().replace(/\\"/g,'') + "'";
 
         let file = await fs.writeFileSync('results.json', queryResponse, 'utf8');
@@ -105,7 +105,7 @@ async function main() {
         // query the OWNER of a commercial paper
         console.log(' ');
         console.log(' ');
-        console.log('Calling queryOwner to get current owner of Commercial Paper instance 00001');
+        console.log('Calling queryOwner to get current owner of Commercial Paper instance 0001');
         console.log('==========================================================================');
         console.log(' ');
         console.log(' ');
