@@ -298,7 +298,7 @@ You should see a JSON array with the history of transactions for commercial pape
 
 <img src="/img/tutorial3/asset-history-query.png" title="Query asset history" alt="Query asset history" />
 
-2. Next, right-click on `queryOwner` transaction and `Evaluate Transaction`. Provide just one parameter to this (owner name). We added a 2nd optional asset below: if you added a 2nd asset, you will see that "MagnetoCorp" has ownership of both papers (as both were redeemed by Hedgematic).
+2. Next, right-click on `queryOwner` transaction and `Evaluate Transaction`. Provide just one parameter to this (ie. 'owner name'). 
 
 ```
 "MagnetoCorp"
@@ -306,23 +306,69 @@ You should see a JSON array with the history of transactions for commercial pape
 
 <img src="/img/tutorial3/ownership-query.png" title="Query ownership" alt="Query ownership" />
 
+In our screenshot, we added a 2nd optional asset below: if you added a 2nd asset, you will see that "MagnetoCorp" has ownership of both papers (as both were redeemed by Hedgematic).
+
 OK cool - well done. The last part of this tutorial is to connect up our query application to do some asset history reporting. We have provided a query client application (Javascript) in the github repo, that will query the ledger and export it to JSON file. The goal is to render this asset history in a HTML 5 browser app for local reporting.
 
 ### Step 7. Connect up the query client application (Node.JS) to render asset history in a HTML browser app
 
-1. 
+1. Locate the client script `clientapp.js` and peruse it to see how it connects to the IBM Cloud 'Commerce' network using the following parameters:
+
+- Gateway (via the `connection.json` from one of the three organisation's in our environment)
+- Identity (one of the three application identities we created)
+- Organisation (Use the name, to locate the corresponding wallet path).
+
+The asset history query in particular will also write results to a local file called `results.json` - used by the browser app later.
+
+2. Install the Node.JS dependencies using the following command 
+
+```
+npm install
+```
+
+(Ignore any warning message for now)
+
+3. Launch the Node.js application as follows: you need to provide two parameters (Organisation name and identity name):
+
+```
+node clientapp.js DigiBank  david
+```
+
+<img src="/img/tutorial3/clientapp-query.png" title="Query History from client" alt="Query History from client" />
+
+You should see the asset history in a JSON array as output from your application query as identity david. Great. Note it has also written a file `results.json`
+
+4. Now lets use our browser client to render the asset history (above) in HTML 5. The supplied file `index.html` uses the free tool [Tabulator](http://tabulator.info/) to render report in very powerful, extensible and interactive ways. You don't have to install anything, you just launch the HTML file as a browser app as follows:
+
+```
+node index.html
+```
+
+You should see a report of your asset data (its dependent on `results.json` existing above) and here you'll see a history of asset `0001`
+
+<img src="/img/tutorial3/html-asset-report.png" title="Render Asset History report" alt="Render Asset History report" />
+
+As a further optional exercise, you can return to your IBM Blockchain Platform Console and browse your transaction history via the IBM Blockchain Platform console. 
+
+5. Simply click on the `Channels` icon - then select `mychannel` and review the transaction history by clicking on a block and then clicking on the transaction id listed, to see the contents of the transaction. You'll be able to easily reconcile this data,  with the transactions you performed earlier. Feel free to browse the transaction data in your block list.
+
+Well done! You've completed the full set of 3 tutorials.
+
 
 ## Summary.
 
-** STOPPED HERE**
 
-Well done! You've now added further query functionality, processing only the deltas, contract-side, before returning the changes/deltas only to the calling client.
+Lets recall what you've completed during the course of this tutorial series:
 
-## Summary
+- developed your Papercontract smart contract, then enhanced it by adding functionality (different types of queries)
+- provisioned a three organisation network* (MagnetoCorp, DigiBank and Hedgmatic) instantiated a smart contract and provisioned identities
+- connected up to your network, using the IBM Blockchain Platform extension
+- transacted as different organisations, to complete a 'typical' commercial paper asset lifecycle
+- connected up your local client application, to be able to query as an identity from any one of the three organizations
+- finally, as DigiBank, queried the history of a commercial paper asset on the ledger, that is shared across the three organizations. You'll see the complete lifecycle of transactions that you performed, rendered in HTML 5.
 
-In this tutorial, you've provisioned a 3 organisation network for the Commercial Paper use case, consisting of MagnetoCorp, DigiBank and Hedgematic. You've also deployed your latet smart contract and connected up to your IBM Blockchain Platform SaaS nodes from your local IBM Blockchain VS Code extension. You will instantiate the smart contract on the channel `mychannel` in the cloud and 
+* Normally of course, each organisation would operate their own nodes/components as part of the network, and join the consortium. They would also have their own client application needs etc. etc.
 
-* [Part 1: Run a commercial paper smart contract with the IBM Blockchain VS Code extension](https://developer.ibm.com/tutorials/run-commercial-paper-smart-contract-with-ibm-blockchain-vscode-extension/)
-* [Part 2: Enhance and add queries to a commercial paper smart contract with the IBM Blockchain VS Code extension](https://developer.ibm.com/tutorials/queries-commercial-paper-smart-contract-ibm-blockchain-vscode-extension/)
+For further study, I firstly recommend you to look at the new [IBM Blockchain Foundation Developer course and badge](https://cognitiveclass.ai/courses/ibm-blockchain-foundation-dev) that allows developers to demonstrate their understanding of Hyperledger Fabric development. The course makes full use of the new tutorials embedded in the IBM Blockchain Platform VS Code extension itself, and the resulting badge rewards developers for completing these. Note that the badge is fully accredited by IBM and is part of the Acclaim open badge platform that recognizes professional success.
 
-For further study, I recommend you look at the IBM Developer [code patterns](https://developer.ibm.com/patterns/category/blockchain/) to try out further sample use cases using the IBM Blockchain Platform VS Code extension. For example, the [global finance sample use case](https://developer.ibm.com/patterns/global-financing-use-case-for-blockchain/) features a global finance smart contract and sample web application that interacts with it using the new Fabric 1.4 contract/fabric-network programming model enhancements.
+Also - take a look at the IBM Developer [code patterns](https://developer.ibm.com/patterns/category/blockchain/) to try out further sample use cases.
